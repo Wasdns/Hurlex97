@@ -6,9 +6,9 @@
 C_SOURCES = $(shell find . -name "*.c") 
 # C objects
 C_OBJECTS = $(patsubst %.c, %.o, $(C_SOURCES))
-# S sources
+# Shell sources
 S_SOURCES = $(shell find . -name "*.s")
-# S objects 
+# Shell objects 
 S_OBJECTS = $(patsubst %.s, %.o, $(S_SOURCES))
 
 CC = gcc
@@ -28,13 +28,14 @@ ASM = nasm
 # -nostdinc: find header files through the dir assigned by -l parm
 # -fno-builtin: built in function; -fno-stack-protector: stack protect
 # -I: assign the first director to search for
-C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -I include
+C_FLAGS = -c -Wall -m32 -ggdb -nostdinc -fno-builtin -fno-stack-protector -I include
 
 # ld parameters: https://linux.die.net/man/1/ld
 # -T: Use scriptfile as the linker script
 # -m: Emulate the emulation linker
 # -nostdlib: Only search library directories explicitly specified on the command line
-LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
+# Hint: ELF = Executable and Linkable Format; It can be identified by GRUB.
+LD_FLAGS = -t scripts/kernel.ld -m elf_i386 -nostdlib
 
 # NASM Assembler parameters: http://www.nasm.us/xdoc/2.12.02/html/nasmdoc0.html
 # -f: Specifying the Output File Format
@@ -46,46 +47,46 @@ ASM_FLAGS = -f elf -g -F stabs
 all: $(S_OBJECTS) $(C_OBJECTS) link update_image
 
 .c.o:
-    @echo 编译代码文件 $< ...
-    $(CC) $(C_FLAGS) $< -o $@
+	@echo 编译代码文件 $< ...
+	$(CC) $(C_FLAGS) $< -o $@
 
 .s.o:
-    @echo 编译汇编文件 $< ...
-    $(ASM) $(ASM_FLAGS) $<
-
+	@echo 编译汇编文件 $< ...
+	$(ASM) $(ASM_FLAGS) $<
+	
 link:
-    @echo 链接内核文件...
-    $(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o hx_kernel
+	@echo 链接内核文件...
+	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o hx_kernel
 
 .PHONY:clean
 clean:
-    $(RM) $(S_OBJECTS) $(C_OBJECTS) hx_kernel
+	$(RM) $(S_OBJECTS) $(C_OBJECTS) hx_kernel
 
 .PHONY:update_image
 update_image:
-    sudo mount floppy.img /mnt/kernel
-    sudo cp hx_kernel /mnt/kernel/hx_kernel
-    sleep 1
-    sudo umount /mnt/kernel
+	sudo mount floppy.img /mnt/kernel
+	sudo cp hx_kernel /mnt/kernel/hx_kernel
+	sleep 1
+	sudo umount /mnt/kernel
 
 .PHONY:mount_image
 mount_image:
-    sudo mount floppy.img /mnt/kernel
+	sudo mount floppy.img /mnt/kernel
 
 .PHONY:umount_image
 umount_image:
-    sudo umount /mnt/kernel
+	sudo umount /mnt/kernel
 
 .PHONY:qemu
 qemu:
-    qemu -fda floppy.img -boot a
+	qemu -fda floppy.img -boot a
 
 .PHONY:bochs
 bochs:
-    bochs -f tools/bochsrc.txt
+	bochs -f scripts/bochsrc.txt
 
 .PHONY:debug
 debug:
-    qemu -S -s -fda floppy.img -boot a &
-    sleep 1
-    cgdb -x tools/gdbinit
+	qemu -S -s -fda floppy.img -boot a &
+	sleep 1
+	cgdb -x scripts/gdbinit

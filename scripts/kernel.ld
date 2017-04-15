@@ -2,7 +2,8 @@
  *      kernel.ld -- 针对 kernel 格式所写的链接脚本
  */
 
-ENTRY(start)
+/* start function */
+ENTRY(start) 
 SECTIONS
 {
     /* 段起始位置 */
