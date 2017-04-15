@@ -28,7 +28,7 @@ ASM = nasm
 # -nostdinc: find header files through the dir assigned by -l parm
 # -fno-builtin: built in function; -fno-stack-protector: stack protect
 # -I: assign the first director to search for
-C_FLAGS = -c -Wall -m32 -ggdb -nostdinc -fno-builtin -fno-stack-protector -I include
+C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -I include
 
 # ld parameters: https://linux.die.net/man/1/ld
 # -T: Use scriptfile as the linker script
@@ -46,6 +46,7 @@ ASM_FLAGS = -f elf -g -F stabs
 # all: => assign the make target
 all: $(S_OBJECTS) $(C_OBJECTS) link update_image
 
+# make = compile the .c file and .s file + link these file into executable file
 .c.o:
 	@echo 编译代码文件 $< ...
 	$(CC) $(C_FLAGS) $< -o $@
@@ -58,10 +59,12 @@ link:
 	@echo 链接内核文件...
 	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o hx_kernel
 
+# make clean
 .PHONY:clean
 clean:
 	$(RM) $(S_OBJECTS) $(C_OBJECTS) hx_kernel
 
+# make update_image
 .PHONY:update_image
 update_image:
 	sudo mount floppy.img /mnt/kernel
@@ -69,22 +72,27 @@ update_image:
 	sleep 1
 	sudo umount /mnt/kernel
 
+# make mount_image
 .PHONY:mount_image
 mount_image:
 	sudo mount floppy.img /mnt/kernel
 
+# make umount_image
 .PHONY:umount_image
 umount_image:
 	sudo umount /mnt/kernel
 
+# make qemu
 .PHONY:qemu
 qemu:
 	qemu -fda floppy.img -boot a
 
+# make bochs
 .PHONY:bochs
 bochs:
 	bochs -f scripts/bochsrc.txt
 
+# make debug
 .PHONY:debug
 debug:
 	qemu -S -s -fda floppy.img -boot a &
