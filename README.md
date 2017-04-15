@@ -9,3 +9,4 @@ Chapter1: [hurlex <一> 项目概述和开发环境配置](http://wiki.0xffffff.
 
 Chapter2: [hurlex <二> 计算机启动过程、GRUB 以及 multiboot 标准](http://wiki.0xffffff.org/posts/hurlex-2.html)
 
+Chapter3: [hurlex <三> 裸机上运行的 Hello OS Kernel](http://wiki.0xffffff.org/posts/hurlex-3.html#fn:7)
