@@ -17,6 +17,12 @@ Chapter3: [hurlex <三> 裸机上运行的 Hello OS Kernel](http://wiki.0xffffff
 
 (Figure: Chapter3, "Hello, Kernel!")
 
+Chapter4: [hurlex <四> 字符模式下的显卡驱动](http://wiki.0xffffff.org/posts/hurlex-4.html#fn:2)
+
+![](https://github.com/Wasdns/Hurlex97/raw/master/screenshots/Chapter4.jpg)
+
+(Figure: Chapter4, Console I/O)
+
 ## Questions
 
 - [Error 13: Invalid or unsupported executable format](https://github.com/hurley25/hurlex-doc/issues/11)
