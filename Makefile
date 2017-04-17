@@ -28,7 +28,7 @@ ASM = nasm
 # -nostdinc: find header files through the dir assigned by -l parm
 # -fno-builtin: built in function; -fno-stack-protector: stack protect
 # -I: assign the first director to search for
-C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -I include
+C_FLAGS = -c -Wall -m32 -std=c99 -ggdb -gstabs+ -nostdinc -fno-builtin -fno-stack-protector -I include
 
 # ld parameters: https://linux.die.net/man/1/ld
 # -T: Use scriptfile as the linker script
