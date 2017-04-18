@@ -148,12 +148,48 @@ void console_write_color(char *cstr, real_color_t back, real_color_t fore) {
 
 // 屏幕输出一个十六进制的整型数
 void console_write_hex(uint32_t n, real_color_t back, real_color_t fore) {
-	// TODO
+	int tmp;
+	int noZeroes = 1; // flag => front 0
+
+	console_write_color("0x", back, fore); // print '0x'
+
+	int i;
+	for (i = 28; i >= 0; i -= 4) {
+		tmp = (n >> i) & 0xF; // hacky
+		if (tmp == 0 && noZeroes != 0) {
+		    continue;
+		}
+		noZeroes = 0;
+		if (tmp >= 0xA) {
+		      console_putc_color(tmp-0xA+'a', back, fore);
+		} else {
+		      console_putc_color(tmp+'0', back, fore);
+		}
+	}
+	console_putc_color('\n', rc_black, rc_white);
 }
 
 // 屏幕输出一个十进制的整型数
 void console_write_dec(uint32_t n, real_color_t back, real_color_t fore) {
-	// TODO
+	if (n == 0) {
+		console_write_color("0", back, fore);
+		return ;
+	}
+
+	char res1[32];
+	char res2[32];
+
+	int tmp = n, i = 0, j = 0;
+	while (tmp > 0) {
+		res1[i++] = '0'+(tmp%10);
+		tmp/=10;
+	} i--;
+
+	while (i >= 0) {
+		res2[j++] = res1[i--]; 
+	}
+	console_write_color(res2, back, fore);
+	console_putc_color('\n', rc_black, rc_white);
 }
 
 /* Functions End */
