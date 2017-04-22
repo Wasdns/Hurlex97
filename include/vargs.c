@@ -9,6 +9,10 @@
 	4.Assembly 调用约定cdecl - 参数入栈顺序: 从右往左.
 */
 
+/*
+	根据第一个参数的地址和类型，通过逐渐计算出以后每一个参数的起始地址的方法取出每一个参数。
+*/
+
 /* Build-in Functions */
 
 typedef __builtin_va_list va_list;

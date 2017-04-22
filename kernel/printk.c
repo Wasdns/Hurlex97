@@ -4,24 +4,22 @@
 
 static int vsprintf(char *buff, const char *format, va_list args);
 
-void printk(const char *format, ...)
-{
+void printk(const char *format, ...) {
 	// 避免频繁创建临时变量，内核的栈很宝贵
-	static char buff[1024]; // space
-	va_list args; // char *
+	static char buff[1024]; 			// space
+	va_list args; 						// char *
 	int i;
 
-	va_start(args, format);
-	i = vsprintf(buff, format, args);
-	va_end(args);
+	va_start(args, format); 			// allocate  
+	i = vsprintf(buff, format, args);	// handle
+	va_end(args);						// finish
 
-	buff[i] = '\0';
+	buff[i] = '\0';	
 
 	console_write(buff);
 }
 
-void printk_color(real_color_t back, real_color_t fore, const char *format, ...)
-{
+void printk_color(real_color_t back, real_color_t fore, const char *format, ...) {
 	// 避免频繁创建临时变量，内核的栈很宝贵
 	static char buff[1024];
 	va_list args;
@@ -38,8 +36,7 @@ void printk_color(real_color_t back, real_color_t fore, const char *format, ...)
 
 #define is_digit(c)	((c) >= '0' && (c) <= '9')
 
-static int skip_atoi(const char **s)
-{
+static int skip_atoi(const char **s) {
 	int i = 0;
 
 	while (is_digit(**s)) {
@@ -147,9 +144,37 @@ static char *number(char *str, int num, int base, int size, int precision, int t
 // static int vsprintf(char *buff, const char *format, va_list args) {}
 // buff = space; format = string arg; args = start pointer.
 
+// 
+// Hint - vsprintf
+// 
+// Func: translate the format string into assigned string with the args;
+//
+// Usages:
+// 
+// char c, idx; for format string: 
+// 
+// if c != % do: buff[index] = c
+// else if c == % do:
+//     if %- || %+ || %  || %# || %0 do: update flags
+//
+//	   if % + integer do: get field width
+//     else if idx == * do: get field width, update flags
+// 	   
+//     if idx == . do: get the precision
+//     
+//     if idx == h || idx == l || idx == L do: conversion qualifier
+//     
+//     if %c || %s || ... do: something...
+// 
+// *(str) = '\0' // end of string
+//
+// // After that, get assigned string str, 
+// 
+// return length = str-buff
+
 static int vsprintf(char *buff, const char *format, va_list args) {
 	int len, i;
-	char *str, *s;
+	char *str, *s;		// str => buff
 	int *ip;
 
 	int flags;			// flags to number()
@@ -170,7 +195,7 @@ static int vsprintf(char *buff, const char *format, va_list args) {
 		repeat:
 			++format;						// this also skips first '%'
 			switch (*format) {
-				case '-': flags |= LEFT; 	// flags = flags|LEFT
+				case '-': flags |= LEFT; 	// left precision
 					  goto repeat;
 				case '+': flags |= PLUS;
 					  goto repeat;
@@ -178,7 +203,7 @@ static int vsprintf(char *buff, const char *format, va_list args) {
 					  goto repeat;
 				case '#': flags |= SPECIAL;
 					  goto repeat;
-				case '0': flags |= ZEROPAD;
+				case '0': flags |= ZEROPAD;	// add 0
 					  goto repeat;
 			}
 		
@@ -197,8 +222,8 @@ static int vsprintf(char *buff, const char *format, va_list args) {
 			}
 		}
 
-		// eg. %10.9f => 
-		// eg. %5.9s => 5 <= len(string) <= 9
+		// eg. %10.9f 
+		// eg. %5.9s <=> 5 <= len(string) <= 9
 
 		// get the precision
 		precision = -1;
@@ -206,7 +231,7 @@ static int vsprintf(char *buff, const char *format, va_list args) {
 			++format;	
 			if (is_digit(*format)) {
 				precision = skip_atoi(&format);
-			} else if (*format == '*') {
+			} else if (*format == '*') { // eg. printf("%*.*s\n",m,n,ch);
 				// it's the next argument
 				precision = va_arg(args, int);
 			}
@@ -218,7 +243,7 @@ static int vsprintf(char *buff, const char *format, va_list args) {
 		// get the conversion qualifier
 		// int qualifier = -1;	// 'h', 'l', or 'L' for integer fields
 		if (*format == 'h' || *format == 'l' || *format == 'L') {
-			//qualifier = *format;
+			// qualifier = *format;
 			++format;
 		}
 
