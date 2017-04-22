@@ -1,5 +1,5 @@
 #include "string.h"
-#include <assert.h>
+// #include <assert.h>
 
 inline void memcpy(uint8_t *dest, const uint8_t *src, uint32_t len) {
     for (; len != 0; len--) {
@@ -38,8 +38,8 @@ inline int strcmp(const char *str1, const char *str2) {
 }
 
 inline char *strcpy(char *dest, const char *src) {
-    assert(dest != NULL && src != NULL);
-    assert(strlen(dest) > strlen(src));
+    // assert(dest != NULL && src != NULL);
+    // assert(strlen(dest) > strlen(src));
     int srclen = strlen(src);
     for (int i = 0; i < srclen; i++) {
         *(dest+i) = *(src+i);
@@ -47,7 +47,7 @@ inline char *strcpy(char *dest, const char *src) {
 }
 
 inline char *strcat(char *dest, const char *src) {
-    assert(sizeof(dest) > strlen(src)+strlen(dest)); // enough place
+    // assert(sizeof(dest) > strlen(src)+strlen(dest)); // enough place
     int dstlen = strlen(dest), srclen = strlen(src);
     for (int i = dstlen; i < dstlen+srclen; i++) {
         *(dest+i) = *(src+i-dstlen);
