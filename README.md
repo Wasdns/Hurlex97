@@ -8,7 +8,9 @@ Reference: [x86架构操作系统内核的实现](http://wiki.0xffffff.org/)
 
 ## Sturcture
 
-Introduction Chapter - hurlex — x86架构的内核Demo实现 - http://wiki.0xffffff.org/posts/hurlex-kernel.html
+### Introduction Chapter 
+
+- hurlex — x86架构的内核Demo实现 - http://wiki.0xffffff.org/posts/hurlex-kernel.html
 
 ### Chapter1 
 
