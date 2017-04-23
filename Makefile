@@ -86,6 +86,7 @@ qemu:
 bochs:
 	bochs -f scripts/bochsrc.txt
 
+# make debug: use cgdb
 .PHONY:debug
 debug:
 	qemu -S -s -fda floppy.img -boot a &
