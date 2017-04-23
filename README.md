@@ -32,6 +32,10 @@ Chapter5 - hurlex <五> 相关库函数和调试打印函数 - http://wiki.0xfff
 
 (Figure: Chapter5, printk)
 
+![](https://github.com/Wasdns/Hurlex97/raw/master/screenshots/Chapter5-2.jpg)
+
+(Figure: Chapter5, debug)
+
 ## Questions
 
 - [Error 13: Invalid or unsupported executable format](https://github.com/hurley25/hurlex-doc/issues/11)
