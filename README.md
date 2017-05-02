@@ -48,6 +48,10 @@ Reference: [x86架构操作系统内核的实现](http://wiki.0xffffff.org/)
 
 (Figure: Chapter5, debug)
 
+![](https://github.com/Wasdns/Hurlex97/raw/master/screenshots/Chapter5-3.jpg)
+
+(Figure: Chapter5, debug)
+
 ## Questions
 
 - [Error 13: Invalid or unsupported executable format](https://github.com/hurley25/hurlex-doc/issues/11)
