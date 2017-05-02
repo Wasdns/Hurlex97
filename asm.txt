@@ -1,0 +1,3324 @@
+
+hx_kernel:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00100000 <start-0xc>:
+  100000:	02 b0 ad 1b 03 00    	add    dh,BYTE PTR [eax+0x31bad]
+  100006:	00 00                	add    BYTE PTR [eax],al
+  100008:	fb                   	sti    
+  100009:	4f                   	dec    edi
+  10000a:	52                   	push   edx
+  10000b:	e4 fa                	in     al,0xfa
+
+0010000c <start>:
+  10000c:	fa                   	cli    
+  10000d:	bc 03 80 00 00       	mov    esp,0x8003
+  100012:	bd 00 00 00 00       	mov    ebp,0x0
+  100017:	83 e4 f0             	and    esp,0xfffffff0
+  10001a:	89 1d 00 b0 10 00    	mov    DWORD PTR ds:0x10b000,ebx
+  100020:	e8 98 11 00 00       	call   1011bd <kern_entry>
+
+00100025 <stop>:
+  100025:	f4                   	hlt    
+  100026:	eb fd                	jmp    100025 <stop>
+
+00100028 <outb>:
+  100028:	55                   	push   ebp
+  100029:	89 e5                	mov    ebp,esp
+  10002b:	83 ec 08             	sub    esp,0x8
+  10002e:	8b 55 08             	mov    edx,DWORD PTR [ebp+0x8]
+  100031:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100034:	66 89 55 fc          	mov    WORD PTR [ebp-0x4],dx
+  100038:	88 45 f8             	mov    BYTE PTR [ebp-0x8],al
+  10003b:	0f b7 55 fc          	movzx  edx,WORD PTR [ebp-0x4]
+  10003f:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  100043:	ee                   	out    dx,al
+  100044:	c9                   	leave  
+  100045:	c3                   	ret    
+
+00100046 <inb>:
+  100046:	55                   	push   ebp
+  100047:	89 e5                	mov    ebp,esp
+  100049:	83 ec 14             	sub    esp,0x14
+  10004c:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10004f:	66 89 45 ec          	mov    WORD PTR [ebp-0x14],ax
+  100053:	0f b7 45 ec          	movzx  eax,WORD PTR [ebp-0x14]
+  100057:	89 c2                	mov    edx,eax
+  100059:	ec                   	in     al,dx
+  10005a:	88 45 ff             	mov    BYTE PTR [ebp-0x1],al
+  10005d:	0f b6 45 ff          	movzx  eax,BYTE PTR [ebp-0x1]
+  100061:	c9                   	leave  
+  100062:	c3                   	ret    
+
+00100063 <inw>:
+  100063:	55                   	push   ebp
+  100064:	89 e5                	mov    ebp,esp
+  100066:	83 ec 14             	sub    esp,0x14
+  100069:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10006c:	66 89 45 ec          	mov    WORD PTR [ebp-0x14],ax
+  100070:	0f b7 45 ec          	movzx  eax,WORD PTR [ebp-0x14]
+  100074:	89 c2                	mov    edx,eax
+  100076:	66 ed                	in     ax,dx
+  100078:	66 89 45 fe          	mov    WORD PTR [ebp-0x2],ax
+  10007c:	0f b7 45 fe          	movzx  eax,WORD PTR [ebp-0x2]
+  100080:	c9                   	leave  
+  100081:	c3                   	ret    
+
+00100082 <memcpy>:
+  100082:	55                   	push   ebp
+  100083:	89 e5                	mov    ebp,esp
+  100085:	eb 1b                	jmp    1000a2 <memcpy+0x20>
+  100087:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10008a:	8d 50 01             	lea    edx,[eax+0x1]
+  10008d:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100090:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  100093:	8d 4a 01             	lea    ecx,[edx+0x1]
+  100096:	89 4d 0c             	mov    DWORD PTR [ebp+0xc],ecx
+  100099:	0f b6 12             	movzx  edx,BYTE PTR [edx]
+  10009c:	88 10                	mov    BYTE PTR [eax],dl
+  10009e:	83 6d 10 01          	sub    DWORD PTR [ebp+0x10],0x1
+  1000a2:	83 7d 10 00          	cmp    DWORD PTR [ebp+0x10],0x0
+  1000a6:	75 df                	jne    100087 <memcpy+0x5>
+  1000a8:	5d                   	pop    ebp
+  1000a9:	c3                   	ret    
+
+001000aa <memset>:
+  1000aa:	55                   	push   ebp
+  1000ab:	89 e5                	mov    ebp,esp
+  1000ad:	83 ec 14             	sub    esp,0x14
+  1000b0:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1000b3:	88 45 ec             	mov    BYTE PTR [ebp-0x14],al
+  1000b6:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1000b9:	89 45 fc             	mov    DWORD PTR [ebp-0x4],eax
+  1000bc:	eb 13                	jmp    1000d1 <memset+0x27>
+  1000be:	8b 45 fc             	mov    eax,DWORD PTR [ebp-0x4]
+  1000c1:	8d 50 01             	lea    edx,[eax+0x1]
+  1000c4:	89 55 fc             	mov    DWORD PTR [ebp-0x4],edx
+  1000c7:	0f b6 55 ec          	movzx  edx,BYTE PTR [ebp-0x14]
+  1000cb:	88 10                	mov    BYTE PTR [eax],dl
+  1000cd:	83 6d 10 01          	sub    DWORD PTR [ebp+0x10],0x1
+  1000d1:	83 7d 10 00          	cmp    DWORD PTR [ebp+0x10],0x0
+  1000d5:	75 e7                	jne    1000be <memset+0x14>
+  1000d7:	c9                   	leave  
+  1000d8:	c3                   	ret    
+
+001000d9 <bzero>:
+  1000d9:	55                   	push   ebp
+  1000da:	89 e5                	mov    ebp,esp
+  1000dc:	83 ec 0c             	sub    esp,0xc
+  1000df:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1000e2:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  1000e6:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1000ed:	00 
+  1000ee:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1000f1:	89 04 24             	mov    DWORD PTR [esp],eax
+  1000f4:	e8 b1 ff ff ff       	call   1000aa <memset>
+  1000f9:	c9                   	leave  
+  1000fa:	c3                   	ret    
+
+001000fb <strlen>:
+  1000fb:	55                   	push   ebp
+  1000fc:	89 e5                	mov    ebp,esp
+  1000fe:	83 ec 10             	sub    esp,0x10
+  100101:	83 7d 08 00          	cmp    DWORD PTR [ebp+0x8],0x0
+  100105:	75 07                	jne    10010e <strlen+0x13>
+  100107:	b8 00 00 00 00       	mov    eax,0x0
+  10010c:	eb 2a                	jmp    100138 <strlen+0x3d>
+  10010e:	c7 45 fc 00 00 00 00 	mov    DWORD PTR [ebp-0x4],0x0
+  100115:	c7 45 f8 00 00 00 00 	mov    DWORD PTR [ebp-0x8],0x0
+  10011c:	eb 08                	jmp    100126 <strlen+0x2b>
+  10011e:	83 45 f8 01          	add    DWORD PTR [ebp-0x8],0x1
+  100122:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  100126:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  100129:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10012c:	01 d0                	add    eax,edx
+  10012e:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100131:	84 c0                	test   al,al
+  100133:	75 e9                	jne    10011e <strlen+0x23>
+  100135:	8b 45 f8             	mov    eax,DWORD PTR [ebp-0x8]
+  100138:	c9                   	leave  
+  100139:	c3                   	ret    
+
+0010013a <strcmp>:
+  10013a:	55                   	push   ebp
+  10013b:	89 e5                	mov    ebp,esp
+  10013d:	53                   	push   ebx
+  10013e:	83 ec 14             	sub    esp,0x14
+  100141:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100144:	89 04 24             	mov    DWORD PTR [esp],eax
+  100147:	e8 af ff ff ff       	call   1000fb <strlen>
+  10014c:	89 c3                	mov    ebx,eax
+  10014e:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100151:	89 04 24             	mov    DWORD PTR [esp],eax
+  100154:	e8 a2 ff ff ff       	call   1000fb <strlen>
+  100159:	39 c3                	cmp    ebx,eax
+  10015b:	74 07                	je     100164 <strcmp+0x2a>
+  10015d:	b8 01 00 00 00       	mov    eax,0x1
+  100162:	eb 49                	jmp    1001ad <strcmp+0x73>
+  100164:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100167:	89 04 24             	mov    DWORD PTR [esp],eax
+  10016a:	e8 8c ff ff ff       	call   1000fb <strlen>
+  10016f:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100172:	c7 45 f8 00 00 00 00 	mov    DWORD PTR [ebp-0x8],0x0
+  100179:	eb 25                	jmp    1001a0 <strcmp+0x66>
+  10017b:	8b 55 f8             	mov    edx,DWORD PTR [ebp-0x8]
+  10017e:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100181:	01 d0                	add    eax,edx
+  100183:	0f b6 10             	movzx  edx,BYTE PTR [eax]
+  100186:	8b 4d f8             	mov    ecx,DWORD PTR [ebp-0x8]
+  100189:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  10018c:	01 c8                	add    eax,ecx
+  10018e:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100191:	38 c2                	cmp    dl,al
+  100193:	74 07                	je     10019c <strcmp+0x62>
+  100195:	b8 01 00 00 00       	mov    eax,0x1
+  10019a:	eb 11                	jmp    1001ad <strcmp+0x73>
+  10019c:	83 45 f8 01          	add    DWORD PTR [ebp-0x8],0x1
+  1001a0:	8b 45 f8             	mov    eax,DWORD PTR [ebp-0x8]
+  1001a3:	3b 45 f4             	cmp    eax,DWORD PTR [ebp-0xc]
+  1001a6:	7c d3                	jl     10017b <strcmp+0x41>
+  1001a8:	b8 00 00 00 00       	mov    eax,0x0
+  1001ad:	83 c4 14             	add    esp,0x14
+  1001b0:	5b                   	pop    ebx
+  1001b1:	5d                   	pop    ebp
+  1001b2:	c3                   	ret    
+
+001001b3 <strcpy>:
+  1001b3:	55                   	push   ebp
+  1001b4:	89 e5                	mov    ebp,esp
+  1001b6:	83 ec 14             	sub    esp,0x14
+  1001b9:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1001bc:	89 04 24             	mov    DWORD PTR [esp],eax
+  1001bf:	e8 37 ff ff ff       	call   1000fb <strlen>
+  1001c4:	89 45 f8             	mov    DWORD PTR [ebp-0x8],eax
+  1001c7:	c7 45 fc 00 00 00 00 	mov    DWORD PTR [ebp-0x4],0x0
+  1001ce:	eb 19                	jmp    1001e9 <strcpy+0x36>
+  1001d0:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  1001d3:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1001d6:	01 c2                	add    edx,eax
+  1001d8:	8b 4d fc             	mov    ecx,DWORD PTR [ebp-0x4]
+  1001db:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1001de:	01 c8                	add    eax,ecx
+  1001e0:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1001e3:	88 02                	mov    BYTE PTR [edx],al
+  1001e5:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  1001e9:	8b 45 fc             	mov    eax,DWORD PTR [ebp-0x4]
+  1001ec:	3b 45 f8             	cmp    eax,DWORD PTR [ebp-0x8]
+  1001ef:	7c df                	jl     1001d0 <strcpy+0x1d>
+  1001f1:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1001f4:	c9                   	leave  
+  1001f5:	c3                   	ret    
+
+001001f6 <strcat>:
+  1001f6:	55                   	push   ebp
+  1001f7:	89 e5                	mov    ebp,esp
+  1001f9:	83 ec 14             	sub    esp,0x14
+  1001fc:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1001ff:	89 04 24             	mov    DWORD PTR [esp],eax
+  100202:	e8 f4 fe ff ff       	call   1000fb <strlen>
+  100207:	89 45 f8             	mov    DWORD PTR [ebp-0x8],eax
+  10020a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  10020d:	89 04 24             	mov    DWORD PTR [esp],eax
+  100210:	e8 e6 fe ff ff       	call   1000fb <strlen>
+  100215:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100218:	8b 45 f8             	mov    eax,DWORD PTR [ebp-0x8]
+  10021b:	89 45 fc             	mov    DWORD PTR [ebp-0x4],eax
+  10021e:	eb 1e                	jmp    10023e <strcat+0x48>
+  100220:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  100223:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100226:	01 c2                	add    edx,eax
+  100228:	8b 4d fc             	mov    ecx,DWORD PTR [ebp-0x4]
+  10022b:	8b 45 f8             	mov    eax,DWORD PTR [ebp-0x8]
+  10022e:	29 c1                	sub    ecx,eax
+  100230:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100233:	01 c8                	add    eax,ecx
+  100235:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100238:	88 02                	mov    BYTE PTR [edx],al
+  10023a:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  10023e:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  100241:	8b 55 f8             	mov    edx,DWORD PTR [ebp-0x8]
+  100244:	01 d0                	add    eax,edx
+  100246:	3b 45 fc             	cmp    eax,DWORD PTR [ebp-0x4]
+  100249:	7f d5                	jg     100220 <strcat+0x2a>
+  10024b:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10024e:	c9                   	leave  
+  10024f:	c3                   	ret    
+
+00100250 <elf_from_multiboot>:
+  100250:	55                   	push   ebp
+  100251:	89 e5                	mov    ebp,esp
+  100253:	83 ec 38             	sub    esp,0x38
+  100256:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100259:	8b 40 24             	mov    eax,DWORD PTR [eax+0x24]
+  10025c:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  10025f:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100262:	8b 50 28             	mov    edx,DWORD PTR [eax+0x28]
+  100265:	89 d0                	mov    eax,edx
+  100267:	c1 e0 02             	shl    eax,0x2
+  10026a:	01 d0                	add    eax,edx
+  10026c:	c1 e0 03             	shl    eax,0x3
+  10026f:	89 c2                	mov    edx,eax
+  100271:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100274:	01 d0                	add    eax,edx
+  100276:	8b 40 0c             	mov    eax,DWORD PTR [eax+0xc]
+  100279:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  10027c:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [ebp-0xc],0x0
+  100283:	e9 b8 00 00 00       	jmp    100340 <elf_from_multiboot+0xf0>
+  100288:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  10028b:	89 d0                	mov    eax,edx
+  10028d:	c1 e0 02             	shl    eax,0x2
+  100290:	01 d0                	add    eax,edx
+  100292:	c1 e0 03             	shl    eax,0x3
+  100295:	89 c2                	mov    edx,eax
+  100297:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  10029a:	01 d0                	add    eax,edx
+  10029c:	8b 10                	mov    edx,DWORD PTR [eax]
+  10029e:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  1002a1:	01 d0                	add    eax,edx
+  1002a3:	89 45 e8             	mov    DWORD PTR [ebp-0x18],eax
+  1002a6:	c7 44 24 04 04 20 10 	mov    DWORD PTR [esp+0x4],0x102004
+  1002ad:	00 
+  1002ae:	8b 45 e8             	mov    eax,DWORD PTR [ebp-0x18]
+  1002b1:	89 04 24             	mov    DWORD PTR [esp],eax
+  1002b4:	e8 81 fe ff ff       	call   10013a <strcmp>
+  1002b9:	85 c0                	test   eax,eax
+  1002bb:	75 34                	jne    1002f1 <elf_from_multiboot+0xa1>
+  1002bd:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  1002c0:	89 d0                	mov    eax,edx
+  1002c2:	c1 e0 02             	shl    eax,0x2
+  1002c5:	01 d0                	add    eax,edx
+  1002c7:	c1 e0 03             	shl    eax,0x3
+  1002ca:	89 c2                	mov    edx,eax
+  1002cc:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  1002cf:	01 d0                	add    eax,edx
+  1002d1:	8b 40 0c             	mov    eax,DWORD PTR [eax+0xc]
+  1002d4:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+  1002d7:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  1002da:	89 d0                	mov    eax,edx
+  1002dc:	c1 e0 02             	shl    eax,0x2
+  1002df:	01 d0                	add    eax,edx
+  1002e1:	c1 e0 03             	shl    eax,0x3
+  1002e4:	89 c2                	mov    edx,eax
+  1002e6:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  1002e9:	01 d0                	add    eax,edx
+  1002eb:	8b 40 14             	mov    eax,DWORD PTR [eax+0x14]
+  1002ee:	89 45 e4             	mov    DWORD PTR [ebp-0x1c],eax
+  1002f1:	c7 44 24 04 0c 20 10 	mov    DWORD PTR [esp+0x4],0x10200c
+  1002f8:	00 
+  1002f9:	8b 45 e8             	mov    eax,DWORD PTR [ebp-0x18]
+  1002fc:	89 04 24             	mov    DWORD PTR [esp],eax
+  1002ff:	e8 36 fe ff ff       	call   10013a <strcmp>
+  100304:	85 c0                	test   eax,eax
+  100306:	75 34                	jne    10033c <elf_from_multiboot+0xec>
+  100308:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  10030b:	89 d0                	mov    eax,edx
+  10030d:	c1 e0 02             	shl    eax,0x2
+  100310:	01 d0                	add    eax,edx
+  100312:	c1 e0 03             	shl    eax,0x3
+  100315:	89 c2                	mov    edx,eax
+  100317:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  10031a:	01 d0                	add    eax,edx
+  10031c:	8b 40 0c             	mov    eax,DWORD PTR [eax+0xc]
+  10031f:	89 45 d8             	mov    DWORD PTR [ebp-0x28],eax
+  100322:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  100325:	89 d0                	mov    eax,edx
+  100327:	c1 e0 02             	shl    eax,0x2
+  10032a:	01 d0                	add    eax,edx
+  10032c:	c1 e0 03             	shl    eax,0x3
+  10032f:	89 c2                	mov    edx,eax
+  100331:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100334:	01 d0                	add    eax,edx
+  100336:	8b 40 14             	mov    eax,DWORD PTR [eax+0x14]
+  100339:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+  10033c:	83 45 f4 01          	add    DWORD PTR [ebp-0xc],0x1
+  100340:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  100343:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100346:	8b 40 1c             	mov    eax,DWORD PTR [eax+0x1c]
+  100349:	39 c2                	cmp    edx,eax
+  10034b:	0f 82 37 ff ff ff    	jb     100288 <elf_from_multiboot+0x38>
+  100351:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100354:	8b 55 d8             	mov    edx,DWORD PTR [ebp-0x28]
+  100357:	89 10                	mov    DWORD PTR [eax],edx
+  100359:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  10035c:	89 50 04             	mov    DWORD PTR [eax+0x4],edx
+  10035f:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100362:	89 50 08             	mov    DWORD PTR [eax+0x8],edx
+  100365:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100368:	89 50 0c             	mov    DWORD PTR [eax+0xc],edx
+  10036b:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10036e:	c9                   	leave  
+  10036f:	c2 04 00             	ret    0x4
+
+00100372 <elf_lookup_symbol>:
+  100372:	55                   	push   ebp
+  100373:	89 e5                	mov    ebp,esp
+  100375:	83 ec 10             	sub    esp,0x10
+  100378:	c7 45 fc 00 00 00 00 	mov    DWORD PTR [ebp-0x4],0x0
+  10037f:	eb 79                	jmp    1003fa <elf_lookup_symbol+0x88>
+  100381:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100384:	8b 00                	mov    eax,DWORD PTR [eax]
+  100386:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  100389:	c1 e2 04             	shl    edx,0x4
+  10038c:	01 d0                	add    eax,edx
+  10038e:	0f b6 40 0c          	movzx  eax,BYTE PTR [eax+0xc]
+  100392:	0f b6 c0             	movzx  eax,al
+  100395:	83 e0 0f             	and    eax,0xf
+  100398:	83 f8 02             	cmp    eax,0x2
+  10039b:	74 02                	je     10039f <elf_lookup_symbol+0x2d>
+  10039d:	eb 57                	jmp    1003f6 <elf_lookup_symbol+0x84>
+  10039f:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1003a2:	8b 00                	mov    eax,DWORD PTR [eax]
+  1003a4:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  1003a7:	c1 e2 04             	shl    edx,0x4
+  1003aa:	01 d0                	add    eax,edx
+  1003ac:	8b 40 04             	mov    eax,DWORD PTR [eax+0x4]
+  1003af:	3b 45 08             	cmp    eax,DWORD PTR [ebp+0x8]
+  1003b2:	77 42                	ja     1003f6 <elf_lookup_symbol+0x84>
+  1003b4:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1003b7:	8b 00                	mov    eax,DWORD PTR [eax]
+  1003b9:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  1003bc:	c1 e2 04             	shl    edx,0x4
+  1003bf:	01 d0                	add    eax,edx
+  1003c1:	8b 50 04             	mov    edx,DWORD PTR [eax+0x4]
+  1003c4:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1003c7:	8b 00                	mov    eax,DWORD PTR [eax]
+  1003c9:	8b 4d fc             	mov    ecx,DWORD PTR [ebp-0x4]
+  1003cc:	c1 e1 04             	shl    ecx,0x4
+  1003cf:	01 c8                	add    eax,ecx
+  1003d1:	8b 40 08             	mov    eax,DWORD PTR [eax+0x8]
+  1003d4:	01 d0                	add    eax,edx
+  1003d6:	3b 45 08             	cmp    eax,DWORD PTR [ebp+0x8]
+  1003d9:	76 1b                	jbe    1003f6 <elf_lookup_symbol+0x84>
+  1003db:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1003de:	8b 40 08             	mov    eax,DWORD PTR [eax+0x8]
+  1003e1:	89 c2                	mov    edx,eax
+  1003e3:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1003e6:	8b 00                	mov    eax,DWORD PTR [eax]
+  1003e8:	8b 4d fc             	mov    ecx,DWORD PTR [ebp-0x4]
+  1003eb:	c1 e1 04             	shl    ecx,0x4
+  1003ee:	01 c8                	add    eax,ecx
+  1003f0:	8b 00                	mov    eax,DWORD PTR [eax]
+  1003f2:	01 d0                	add    eax,edx
+  1003f4:	eb 1d                	jmp    100413 <elf_lookup_symbol+0xa1>
+  1003f6:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  1003fa:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  1003fd:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100400:	8b 40 04             	mov    eax,DWORD PTR [eax+0x4]
+  100403:	c1 e8 04             	shr    eax,0x4
+  100406:	39 c2                	cmp    edx,eax
+  100408:	0f 82 73 ff ff ff    	jb     100381 <elf_lookup_symbol+0xf>
+  10040e:	b8 00 00 00 00       	mov    eax,0x0
+  100413:	c9                   	leave  
+  100414:	c3                   	ret    
+
+00100415 <move_cursor>:
+  100415:	55                   	push   ebp
+  100416:	89 e5                	mov    ebp,esp
+  100418:	83 ec 28             	sub    esp,0x28
+  10041b:	0f b6 05 05 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b005
+  100422:	0f b6 d0             	movzx  edx,al
+  100425:	89 d0                	mov    eax,edx
+  100427:	c1 e0 02             	shl    eax,0x2
+  10042a:	01 d0                	add    eax,edx
+  10042c:	c1 e0 04             	shl    eax,0x4
+  10042f:	89 c2                	mov    edx,eax
+  100431:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  100438:	0f b6 c0             	movzx  eax,al
+  10043b:	01 d0                	add    eax,edx
+  10043d:	66 89 45 f6          	mov    WORD PTR [ebp-0xa],ax
+  100441:	c7 44 24 04 0e 00 00 	mov    DWORD PTR [esp+0x4],0xe
+  100448:	00 
+  100449:	c7 04 24 d4 03 00 00 	mov    DWORD PTR [esp],0x3d4
+  100450:	e8 d3 fb ff ff       	call   100028 <outb>
+  100455:	0f b7 45 f6          	movzx  eax,WORD PTR [ebp-0xa]
+  100459:	66 c1 e8 08          	shr    ax,0x8
+  10045d:	0f b7 c0             	movzx  eax,ax
+  100460:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100464:	c7 04 24 d5 03 00 00 	mov    DWORD PTR [esp],0x3d5
+  10046b:	e8 b8 fb ff ff       	call   100028 <outb>
+  100470:	c7 44 24 04 0f 00 00 	mov    DWORD PTR [esp+0x4],0xf
+  100477:	00 
+  100478:	c7 04 24 d4 03 00 00 	mov    DWORD PTR [esp],0x3d4
+  10047f:	e8 a4 fb ff ff       	call   100028 <outb>
+  100484:	0f b7 45 f6          	movzx  eax,WORD PTR [ebp-0xa]
+  100488:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  10048c:	c7 04 24 d5 03 00 00 	mov    DWORD PTR [esp],0x3d5
+  100493:	e8 90 fb ff ff       	call   100028 <outb>
+  100498:	c9                   	leave  
+  100499:	c3                   	ret    
+
+0010049a <scroll>:
+  10049a:	55                   	push   ebp
+  10049b:	89 e5                	mov    ebp,esp
+  10049d:	83 ec 10             	sub    esp,0x10
+  1004a0:	c6 45 fb 0f          	mov    BYTE PTR [ebp-0x5],0xf
+  1004a4:	0f b6 45 fb          	movzx  eax,BYTE PTR [ebp-0x5]
+  1004a8:	c1 e0 08             	shl    eax,0x8
+  1004ab:	83 c8 20             	or     eax,0x20
+  1004ae:	66 89 45 f8          	mov    WORD PTR [ebp-0x8],ax
+  1004b2:	0f b6 05 05 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b005
+  1004b9:	3c 18                	cmp    al,0x18
+  1004bb:	76 67                	jbe    100524 <scroll+0x8a>
+  1004bd:	c7 45 fc 00 00 00 00 	mov    DWORD PTR [ebp-0x4],0x0
+  1004c4:	eb 25                	jmp    1004eb <scroll+0x51>
+  1004c6:	a1 00 20 10 00       	mov    eax,ds:0x102000
+  1004cb:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  1004ce:	01 d2                	add    edx,edx
+  1004d0:	01 c2                	add    edx,eax
+  1004d2:	a1 00 20 10 00       	mov    eax,ds:0x102000
+  1004d7:	8b 4d fc             	mov    ecx,DWORD PTR [ebp-0x4]
+  1004da:	83 c1 50             	add    ecx,0x50
+  1004dd:	01 c9                	add    ecx,ecx
+  1004df:	01 c8                	add    eax,ecx
+  1004e1:	0f b7 00             	movzx  eax,WORD PTR [eax]
+  1004e4:	66 89 02             	mov    WORD PTR [edx],ax
+  1004e7:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  1004eb:	81 7d fc 7f 07 00 00 	cmp    DWORD PTR [ebp-0x4],0x77f
+  1004f2:	7e d2                	jle    1004c6 <scroll+0x2c>
+  1004f4:	c7 45 fc 80 07 00 00 	mov    DWORD PTR [ebp-0x4],0x780
+  1004fb:	eb 17                	jmp    100514 <scroll+0x7a>
+  1004fd:	a1 00 20 10 00       	mov    eax,ds:0x102000
+  100502:	8b 55 fc             	mov    edx,DWORD PTR [ebp-0x4]
+  100505:	01 d2                	add    edx,edx
+  100507:	01 c2                	add    edx,eax
+  100509:	0f b7 45 f8          	movzx  eax,WORD PTR [ebp-0x8]
+  10050d:	66 89 02             	mov    WORD PTR [edx],ax
+  100510:	83 45 fc 01          	add    DWORD PTR [ebp-0x4],0x1
+  100514:	81 7d fc cf 07 00 00 	cmp    DWORD PTR [ebp-0x4],0x7cf
+  10051b:	7e e0                	jle    1004fd <scroll+0x63>
+  10051d:	c6 05 05 b0 10 00 18 	mov    BYTE PTR ds:0x10b005,0x18
+  100524:	c9                   	leave  
+  100525:	c3                   	ret    
+
+00100526 <console_clear>:
+  100526:	55                   	push   ebp
+  100527:	89 e5                	mov    ebp,esp
+  100529:	83 ec 18             	sub    esp,0x18
+  10052c:	c6 45 f3 0f          	mov    BYTE PTR [ebp-0xd],0xf
+  100530:	0f b6 45 f3          	movzx  eax,BYTE PTR [ebp-0xd]
+  100534:	c1 e0 08             	shl    eax,0x8
+  100537:	83 c8 20             	or     eax,0x20
+  10053a:	66 89 45 f0          	mov    WORD PTR [ebp-0x10],ax
+  10053e:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [ebp-0xc],0x0
+  100545:	eb 17                	jmp    10055e <console_clear+0x38>
+  100547:	a1 00 20 10 00       	mov    eax,ds:0x102000
+  10054c:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  10054f:	01 d2                	add    edx,edx
+  100551:	01 c2                	add    edx,eax
+  100553:	0f b7 45 f0          	movzx  eax,WORD PTR [ebp-0x10]
+  100557:	66 89 02             	mov    WORD PTR [edx],ax
+  10055a:	83 45 f4 01          	add    DWORD PTR [ebp-0xc],0x1
+  10055e:	81 7d f4 cf 07 00 00 	cmp    DWORD PTR [ebp-0xc],0x7cf
+  100565:	7e e0                	jle    100547 <console_clear+0x21>
+  100567:	c6 05 04 b0 10 00 00 	mov    BYTE PTR ds:0x10b004,0x0
+  10056e:	c6 05 05 b0 10 00 00 	mov    BYTE PTR ds:0x10b005,0x0
+  100575:	e8 9b fe ff ff       	call   100415 <move_cursor>
+  10057a:	c9                   	leave  
+  10057b:	c3                   	ret    
+
+0010057c <console_putc_color>:
+  10057c:	55                   	push   ebp
+  10057d:	89 e5                	mov    ebp,esp
+  10057f:	83 ec 28             	sub    esp,0x28
+  100582:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100585:	88 45 e4             	mov    BYTE PTR [ebp-0x1c],al
+  100588:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  10058b:	88 45 f7             	mov    BYTE PTR [ebp-0x9],al
+  10058e:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100591:	88 45 f6             	mov    BYTE PTR [ebp-0xa],al
+  100594:	0f b6 45 f7          	movzx  eax,BYTE PTR [ebp-0x9]
+  100598:	c1 e0 04             	shl    eax,0x4
+  10059b:	0f b6 55 f6          	movzx  edx,BYTE PTR [ebp-0xa]
+  10059f:	83 e2 0f             	and    edx,0xf
+  1005a2:	09 d0                	or     eax,edx
+  1005a4:	88 45 f5             	mov    BYTE PTR [ebp-0xb],al
+  1005a7:	0f b6 45 f5          	movzx  eax,BYTE PTR [ebp-0xb]
+  1005ab:	c1 e0 08             	shl    eax,0x8
+  1005ae:	66 89 45 f2          	mov    WORD PTR [ebp-0xe],ax
+  1005b2:	80 7d e4 08          	cmp    BYTE PTR [ebp-0x1c],0x8
+  1005b6:	75 1f                	jne    1005d7 <console_putc_color+0x5b>
+  1005b8:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  1005bf:	84 c0                	test   al,al
+  1005c1:	74 14                	je     1005d7 <console_putc_color+0x5b>
+  1005c3:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  1005ca:	83 e8 01             	sub    eax,0x1
+  1005cd:	a2 04 b0 10 00       	mov    ds:0x10b004,al
+  1005d2:	e9 97 00 00 00       	jmp    10066e <console_putc_color+0xf2>
+  1005d7:	80 7d e4 09          	cmp    BYTE PTR [ebp-0x1c],0x9
+  1005db:	75 14                	jne    1005f1 <console_putc_color+0x75>
+  1005dd:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  1005e4:	83 c0 08             	add    eax,0x8
+  1005e7:	83 e0 f8             	and    eax,0xfffffff8
+  1005ea:	a2 04 b0 10 00       	mov    ds:0x10b004,al
+  1005ef:	eb 7d                	jmp    10066e <console_putc_color+0xf2>
+  1005f1:	80 7d e4 0d          	cmp    BYTE PTR [ebp-0x1c],0xd
+  1005f5:	75 09                	jne    100600 <console_putc_color+0x84>
+  1005f7:	c6 05 04 b0 10 00 00 	mov    BYTE PTR ds:0x10b004,0x0
+  1005fe:	eb 6e                	jmp    10066e <console_putc_color+0xf2>
+  100600:	80 7d e4 0a          	cmp    BYTE PTR [ebp-0x1c],0xa
+  100604:	75 18                	jne    10061e <console_putc_color+0xa2>
+  100606:	c6 05 04 b0 10 00 00 	mov    BYTE PTR ds:0x10b004,0x0
+  10060d:	0f b6 05 05 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b005
+  100614:	83 c0 01             	add    eax,0x1
+  100617:	a2 05 b0 10 00       	mov    ds:0x10b005,al
+  10061c:	eb 50                	jmp    10066e <console_putc_color+0xf2>
+  10061e:	80 7d e4 1f          	cmp    BYTE PTR [ebp-0x1c],0x1f
+  100622:	7e 4a                	jle    10066e <console_putc_color+0xf2>
+  100624:	8b 0d 00 20 10 00    	mov    ecx,DWORD PTR ds:0x102000
+  10062a:	0f b6 05 05 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b005
+  100631:	0f b6 d0             	movzx  edx,al
+  100634:	89 d0                	mov    eax,edx
+  100636:	c1 e0 02             	shl    eax,0x2
+  100639:	01 d0                	add    eax,edx
+  10063b:	c1 e0 04             	shl    eax,0x4
+  10063e:	89 c2                	mov    edx,eax
+  100640:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  100647:	0f b6 c0             	movzx  eax,al
+  10064a:	01 d0                	add    eax,edx
+  10064c:	01 c0                	add    eax,eax
+  10064e:	8d 14 01             	lea    edx,[ecx+eax*1]
+  100651:	66 0f be 4d e4       	movsx  cx,BYTE PTR [ebp-0x1c]
+  100656:	0f b7 45 f2          	movzx  eax,WORD PTR [ebp-0xe]
+  10065a:	09 c8                	or     eax,ecx
+  10065c:	66 89 02             	mov    WORD PTR [edx],ax
+  10065f:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  100666:	83 c0 01             	add    eax,0x1
+  100669:	a2 04 b0 10 00       	mov    ds:0x10b004,al
+  10066e:	0f b6 05 04 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b004
+  100675:	3c 4f                	cmp    al,0x4f
+  100677:	76 16                	jbe    10068f <console_putc_color+0x113>
+  100679:	c6 05 04 b0 10 00 00 	mov    BYTE PTR ds:0x10b004,0x0
+  100680:	0f b6 05 05 b0 10 00 	movzx  eax,BYTE PTR ds:0x10b005
+  100687:	83 c0 01             	add    eax,0x1
+  10068a:	a2 05 b0 10 00       	mov    ds:0x10b005,al
+  10068f:	e8 06 fe ff ff       	call   10049a <scroll>
+  100694:	e8 7c fd ff ff       	call   100415 <move_cursor>
+  100699:	c9                   	leave  
+  10069a:	c3                   	ret    
+
+0010069b <console_write>:
+  10069b:	55                   	push   ebp
+  10069c:	89 e5                	mov    ebp,esp
+  10069e:	83 ec 18             	sub    esp,0x18
+  1006a1:	eb 27                	jmp    1006ca <console_write+0x2f>
+  1006a3:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1006a6:	8d 50 01             	lea    edx,[eax+0x1]
+  1006a9:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  1006ac:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1006af:	0f be c0             	movsx  eax,al
+  1006b2:	c7 44 24 08 0f 00 00 	mov    DWORD PTR [esp+0x8],0xf
+  1006b9:	00 
+  1006ba:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1006c1:	00 
+  1006c2:	89 04 24             	mov    DWORD PTR [esp],eax
+  1006c5:	e8 b2 fe ff ff       	call   10057c <console_putc_color>
+  1006ca:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1006cd:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1006d0:	84 c0                	test   al,al
+  1006d2:	75 cf                	jne    1006a3 <console_write+0x8>
+  1006d4:	c9                   	leave  
+  1006d5:	c3                   	ret    
+
+001006d6 <console_write_color>:
+  1006d6:	55                   	push   ebp
+  1006d7:	89 e5                	mov    ebp,esp
+  1006d9:	83 ec 18             	sub    esp,0x18
+  1006dc:	eb 25                	jmp    100703 <console_write_color+0x2d>
+  1006de:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1006e1:	8d 50 01             	lea    edx,[eax+0x1]
+  1006e4:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  1006e7:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1006ea:	0f be c0             	movsx  eax,al
+  1006ed:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+  1006f0:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  1006f4:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  1006f7:	89 54 24 04          	mov    DWORD PTR [esp+0x4],edx
+  1006fb:	89 04 24             	mov    DWORD PTR [esp],eax
+  1006fe:	e8 79 fe ff ff       	call   10057c <console_putc_color>
+  100703:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100706:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100709:	84 c0                	test   al,al
+  10070b:	75 d1                	jne    1006de <console_write_color+0x8>
+  10070d:	c9                   	leave  
+  10070e:	c3                   	ret    
+
+0010070f <console_write_hex>:
+  10070f:	55                   	push   ebp
+  100710:	89 e5                	mov    ebp,esp
+  100712:	83 ec 28             	sub    esp,0x28
+  100715:	c7 45 f4 01 00 00 00 	mov    DWORD PTR [ebp-0xc],0x1
+  10071c:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  10071f:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  100723:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100726:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  10072a:	c7 04 24 14 20 10 00 	mov    DWORD PTR [esp],0x102014
+  100731:	e8 a0 ff ff ff       	call   1006d6 <console_write_color>
+  100736:	c7 45 f0 1c 00 00 00 	mov    DWORD PTR [ebp-0x10],0x1c
+  10073d:	eb 71                	jmp    1007b0 <console_write_hex+0xa1>
+  10073f:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100742:	8b 55 08             	mov    edx,DWORD PTR [ebp+0x8]
+  100745:	89 c1                	mov    ecx,eax
+  100747:	d3 ea                	shr    edx,cl
+  100749:	89 d0                	mov    eax,edx
+  10074b:	83 e0 0f             	and    eax,0xf
+  10074e:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100751:	83 7d ec 00          	cmp    DWORD PTR [ebp-0x14],0x0
+  100755:	75 08                	jne    10075f <console_write_hex+0x50>
+  100757:	83 7d f4 00          	cmp    DWORD PTR [ebp-0xc],0x0
+  10075b:	74 02                	je     10075f <console_write_hex+0x50>
+  10075d:	eb 4d                	jmp    1007ac <console_write_hex+0x9d>
+  10075f:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [ebp-0xc],0x0
+  100766:	83 7d ec 09          	cmp    DWORD PTR [ebp-0x14],0x9
+  10076a:	7e 21                	jle    10078d <console_write_hex+0x7e>
+  10076c:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  10076f:	83 c0 57             	add    eax,0x57
+  100772:	0f be c0             	movsx  eax,al
+  100775:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+  100778:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  10077c:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  10077f:	89 54 24 04          	mov    DWORD PTR [esp+0x4],edx
+  100783:	89 04 24             	mov    DWORD PTR [esp],eax
+  100786:	e8 f1 fd ff ff       	call   10057c <console_putc_color>
+  10078b:	eb 1f                	jmp    1007ac <console_write_hex+0x9d>
+  10078d:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100790:	83 c0 30             	add    eax,0x30
+  100793:	0f be c0             	movsx  eax,al
+  100796:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+  100799:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  10079d:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  1007a0:	89 54 24 04          	mov    DWORD PTR [esp+0x4],edx
+  1007a4:	89 04 24             	mov    DWORD PTR [esp],eax
+  1007a7:	e8 d0 fd ff ff       	call   10057c <console_putc_color>
+  1007ac:	83 6d f0 04          	sub    DWORD PTR [ebp-0x10],0x4
+  1007b0:	83 7d f0 00          	cmp    DWORD PTR [ebp-0x10],0x0
+  1007b4:	79 89                	jns    10073f <console_write_hex+0x30>
+  1007b6:	c7 44 24 08 0f 00 00 	mov    DWORD PTR [esp+0x8],0xf
+  1007bd:	00 
+  1007be:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1007c5:	00 
+  1007c6:	c7 04 24 0a 00 00 00 	mov    DWORD PTR [esp],0xa
+  1007cd:	e8 aa fd ff ff       	call   10057c <console_putc_color>
+  1007d2:	c9                   	leave  
+  1007d3:	c3                   	ret    
+
+001007d4 <console_write_dec>:
+  1007d4:	55                   	push   ebp
+  1007d5:	89 e5                	mov    ebp,esp
+  1007d7:	53                   	push   ebx
+  1007d8:	83 ec 64             	sub    esp,0x64
+  1007db:	83 7d 08 00          	cmp    DWORD PTR [ebp+0x8],0x0
+  1007df:	75 1f                	jne    100800 <console_write_dec+0x2c>
+  1007e1:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  1007e4:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  1007e8:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  1007eb:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1007ef:	c7 04 24 17 20 10 00 	mov    DWORD PTR [esp],0x102017
+  1007f6:	e8 db fe ff ff       	call   1006d6 <console_write_color>
+  1007fb:	e9 c8 00 00 00       	jmp    1008c8 <console_write_dec+0xf4>
+  100800:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100803:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100806:	c7 45 f0 00 00 00 00 	mov    DWORD PTR [ebp-0x10],0x0
+  10080d:	c7 45 ec 00 00 00 00 	mov    DWORD PTR [ebp-0x14],0x0
+  100814:	eb 50                	jmp    100866 <console_write_dec+0x92>
+  100816:	8b 5d f0             	mov    ebx,DWORD PTR [ebp-0x10]
+  100819:	8d 43 01             	lea    eax,[ebx+0x1]
+  10081c:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  10081f:	8b 4d f4             	mov    ecx,DWORD PTR [ebp-0xc]
+  100822:	ba 67 66 66 66       	mov    edx,0x66666667
+  100827:	89 c8                	mov    eax,ecx
+  100829:	f7 ea                	imul   edx
+  10082b:	c1 fa 02             	sar    edx,0x2
+  10082e:	89 c8                	mov    eax,ecx
+  100830:	c1 f8 1f             	sar    eax,0x1f
+  100833:	29 c2                	sub    edx,eax
+  100835:	89 d0                	mov    eax,edx
+  100837:	c1 e0 02             	shl    eax,0x2
+  10083a:	01 d0                	add    eax,edx
+  10083c:	01 c0                	add    eax,eax
+  10083e:	29 c1                	sub    ecx,eax
+  100840:	89 ca                	mov    edx,ecx
+  100842:	89 d0                	mov    eax,edx
+  100844:	83 c0 30             	add    eax,0x30
+  100847:	88 44 1d cc          	mov    BYTE PTR [ebp+ebx*1-0x34],al
+  10084b:	8b 4d f4             	mov    ecx,DWORD PTR [ebp-0xc]
+  10084e:	ba 67 66 66 66       	mov    edx,0x66666667
+  100853:	89 c8                	mov    eax,ecx
+  100855:	f7 ea                	imul   edx
+  100857:	c1 fa 02             	sar    edx,0x2
+  10085a:	89 c8                	mov    eax,ecx
+  10085c:	c1 f8 1f             	sar    eax,0x1f
+  10085f:	29 c2                	sub    edx,eax
+  100861:	89 d0                	mov    eax,edx
+  100863:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100866:	83 7d f4 00          	cmp    DWORD PTR [ebp-0xc],0x0
+  10086a:	7f aa                	jg     100816 <console_write_dec+0x42>
+  10086c:	83 6d f0 01          	sub    DWORD PTR [ebp-0x10],0x1
+  100870:	eb 1b                	jmp    10088d <console_write_dec+0xb9>
+  100872:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100875:	8d 50 01             	lea    edx,[eax+0x1]
+  100878:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  10087b:	8b 55 f0             	mov    edx,DWORD PTR [ebp-0x10]
+  10087e:	8d 4a ff             	lea    ecx,[edx-0x1]
+  100881:	89 4d f0             	mov    DWORD PTR [ebp-0x10],ecx
+  100884:	0f b6 54 15 cc       	movzx  edx,BYTE PTR [ebp+edx*1-0x34]
+  100889:	88 54 05 ac          	mov    BYTE PTR [ebp+eax*1-0x54],dl
+  10088d:	83 7d f0 00          	cmp    DWORD PTR [ebp-0x10],0x0
+  100891:	79 df                	jns    100872 <console_write_dec+0x9e>
+  100893:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100896:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  10089a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  10089d:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1008a1:	8d 45 ac             	lea    eax,[ebp-0x54]
+  1008a4:	89 04 24             	mov    DWORD PTR [esp],eax
+  1008a7:	e8 2a fe ff ff       	call   1006d6 <console_write_color>
+  1008ac:	c7 44 24 08 0f 00 00 	mov    DWORD PTR [esp+0x8],0xf
+  1008b3:	00 
+  1008b4:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1008bb:	00 
+  1008bc:	c7 04 24 0a 00 00 00 	mov    DWORD PTR [esp],0xa
+  1008c3:	e8 b4 fc ff ff       	call   10057c <console_putc_color>
+  1008c8:	83 c4 64             	add    esp,0x64
+  1008cb:	5b                   	pop    ebx
+  1008cc:	5d                   	pop    ebp
+  1008cd:	c3                   	ret    
+
+001008ce <printk>:
+  1008ce:	55                   	push   ebp
+  1008cf:	89 e5                	mov    ebp,esp
+  1008d1:	83 ec 28             	sub    esp,0x28
+  1008d4:	8d 45 0c             	lea    eax,[ebp+0xc]
+  1008d7:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  1008da:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  1008dd:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  1008e1:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1008e4:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1008e8:	c7 04 24 20 b0 10 00 	mov    DWORD PTR [esp],0x10b020
+  1008ef:	e8 fe 02 00 00       	call   100bf2 <vsprintf>
+  1008f4:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  1008f7:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  1008fa:	05 20 b0 10 00       	add    eax,0x10b020
+  1008ff:	c6 00 00             	mov    BYTE PTR [eax],0x0
+  100902:	c7 04 24 20 b0 10 00 	mov    DWORD PTR [esp],0x10b020
+  100909:	e8 8d fd ff ff       	call   10069b <console_write>
+  10090e:	c9                   	leave  
+  10090f:	c3                   	ret    
+
+00100910 <printk_color>:
+  100910:	55                   	push   ebp
+  100911:	89 e5                	mov    ebp,esp
+  100913:	83 ec 28             	sub    esp,0x28
+  100916:	8d 45 14             	lea    eax,[ebp+0x14]
+  100919:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  10091c:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  10091f:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  100923:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100926:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  10092a:	c7 04 24 20 b4 10 00 	mov    DWORD PTR [esp],0x10b420
+  100931:	e8 bc 02 00 00       	call   100bf2 <vsprintf>
+  100936:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100939:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  10093c:	05 20 b4 10 00       	add    eax,0x10b420
+  100941:	c6 00 00             	mov    BYTE PTR [eax],0x0
+  100944:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100947:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  10094b:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10094e:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100952:	c7 04 24 20 b4 10 00 	mov    DWORD PTR [esp],0x10b420
+  100959:	e8 78 fd ff ff       	call   1006d6 <console_write_color>
+  10095e:	c9                   	leave  
+  10095f:	c3                   	ret    
+
+00100960 <skip_atoi>:
+  100960:	55                   	push   ebp
+  100961:	89 e5                	mov    ebp,esp
+  100963:	53                   	push   ebx
+  100964:	83 ec 10             	sub    esp,0x10
+  100967:	c7 45 f8 00 00 00 00 	mov    DWORD PTR [ebp-0x8],0x0
+  10096e:	eb 29                	jmp    100999 <skip_atoi+0x39>
+  100970:	8b 55 f8             	mov    edx,DWORD PTR [ebp-0x8]
+  100973:	89 d0                	mov    eax,edx
+  100975:	c1 e0 02             	shl    eax,0x2
+  100978:	01 d0                	add    eax,edx
+  10097a:	01 c0                	add    eax,eax
+  10097c:	89 c3                	mov    ebx,eax
+  10097e:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100981:	8b 00                	mov    eax,DWORD PTR [eax]
+  100983:	8d 48 01             	lea    ecx,[eax+0x1]
+  100986:	8b 55 08             	mov    edx,DWORD PTR [ebp+0x8]
+  100989:	89 0a                	mov    DWORD PTR [edx],ecx
+  10098b:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  10098e:	0f be c0             	movsx  eax,al
+  100991:	01 d8                	add    eax,ebx
+  100993:	83 e8 30             	sub    eax,0x30
+  100996:	89 45 f8             	mov    DWORD PTR [ebp-0x8],eax
+  100999:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  10099c:	8b 00                	mov    eax,DWORD PTR [eax]
+  10099e:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1009a1:	3c 2f                	cmp    al,0x2f
+  1009a3:	7e 0c                	jle    1009b1 <skip_atoi+0x51>
+  1009a5:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  1009a8:	8b 00                	mov    eax,DWORD PTR [eax]
+  1009aa:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  1009ad:	3c 39                	cmp    al,0x39
+  1009af:	7e bf                	jle    100970 <skip_atoi+0x10>
+  1009b1:	8b 45 f8             	mov    eax,DWORD PTR [ebp-0x8]
+  1009b4:	83 c4 10             	add    esp,0x10
+  1009b7:	5b                   	pop    ebx
+  1009b8:	5d                   	pop    ebp
+  1009b9:	c3                   	ret    
+
+001009ba <number>:
+  1009ba:	55                   	push   ebp
+  1009bb:	89 e5                	mov    ebp,esp
+  1009bd:	53                   	push   ebx
+  1009be:	83 ec 40             	sub    esp,0x40
+  1009c1:	c7 45 f4 1c 20 10 00 	mov    DWORD PTR [ebp-0xc],0x10201c
+  1009c8:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  1009cb:	83 e0 40             	and    eax,0x40
+  1009ce:	85 c0                	test   eax,eax
+  1009d0:	74 07                	je     1009d9 <number+0x1f>
+  1009d2:	c7 45 f4 44 20 10 00 	mov    DWORD PTR [ebp-0xc],0x102044
+  1009d9:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  1009dc:	83 e0 10             	and    eax,0x10
+  1009df:	85 c0                	test   eax,eax
+  1009e1:	74 04                	je     1009e7 <number+0x2d>
+  1009e3:	83 65 1c fe          	and    DWORD PTR [ebp+0x1c],0xfffffffe
+  1009e7:	83 7d 10 01          	cmp    DWORD PTR [ebp+0x10],0x1
+  1009eb:	7e 06                	jle    1009f3 <number+0x39>
+  1009ed:	83 7d 10 24          	cmp    DWORD PTR [ebp+0x10],0x24
+  1009f1:	7e 0a                	jle    1009fd <number+0x43>
+  1009f3:	b8 00 00 00 00       	mov    eax,0x0
+  1009f8:	e9 ef 01 00 00       	jmp    100bec <number+0x232>
+  1009fd:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100a00:	83 e0 01             	and    eax,0x1
+  100a03:	85 c0                	test   eax,eax
+  100a05:	74 07                	je     100a0e <number+0x54>
+  100a07:	b8 30 00 00 00       	mov    eax,0x30
+  100a0c:	eb 05                	jmp    100a13 <number+0x59>
+  100a0e:	b8 20 00 00 00       	mov    eax,0x20
+  100a13:	88 45 ef             	mov    BYTE PTR [ebp-0x11],al
+  100a16:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100a19:	83 e0 02             	and    eax,0x2
+  100a1c:	85 c0                	test   eax,eax
+  100a1e:	74 0f                	je     100a2f <number+0x75>
+  100a20:	83 7d 0c 00          	cmp    DWORD PTR [ebp+0xc],0x0
+  100a24:	79 09                	jns    100a2f <number+0x75>
+  100a26:	c6 45 fb 2d          	mov    BYTE PTR [ebp-0x5],0x2d
+  100a2a:	f7 5d 0c             	neg    DWORD PTR [ebp+0xc]
+  100a2d:	eb 2a                	jmp    100a59 <number+0x9f>
+  100a2f:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100a32:	83 e0 04             	and    eax,0x4
+  100a35:	85 c0                	test   eax,eax
+  100a37:	75 18                	jne    100a51 <number+0x97>
+  100a39:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100a3c:	83 e0 08             	and    eax,0x8
+  100a3f:	85 c0                	test   eax,eax
+  100a41:	74 07                	je     100a4a <number+0x90>
+  100a43:	b8 20 00 00 00       	mov    eax,0x20
+  100a48:	eb 0c                	jmp    100a56 <number+0x9c>
+  100a4a:	b8 00 00 00 00       	mov    eax,0x0
+  100a4f:	eb 05                	jmp    100a56 <number+0x9c>
+  100a51:	b8 2b 00 00 00       	mov    eax,0x2b
+  100a56:	88 45 fb             	mov    BYTE PTR [ebp-0x5],al
+  100a59:	80 7d fb 00          	cmp    BYTE PTR [ebp-0x5],0x0
+  100a5d:	74 04                	je     100a63 <number+0xa9>
+  100a5f:	83 6d 14 01          	sub    DWORD PTR [ebp+0x14],0x1
+  100a63:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100a66:	83 e0 20             	and    eax,0x20
+  100a69:	85 c0                	test   eax,eax
+  100a6b:	74 16                	je     100a83 <number+0xc9>
+  100a6d:	83 7d 10 10          	cmp    DWORD PTR [ebp+0x10],0x10
+  100a71:	75 06                	jne    100a79 <number+0xbf>
+  100a73:	83 6d 14 02          	sub    DWORD PTR [ebp+0x14],0x2
+  100a77:	eb 0a                	jmp    100a83 <number+0xc9>
+  100a79:	83 7d 10 08          	cmp    DWORD PTR [ebp+0x10],0x8
+  100a7d:	75 04                	jne    100a83 <number+0xc9>
+  100a7f:	83 6d 14 01          	sub    DWORD PTR [ebp+0x14],0x1
+  100a83:	c7 45 f0 00 00 00 00 	mov    DWORD PTR [ebp-0x10],0x0
+  100a8a:	83 7d 0c 00          	cmp    DWORD PTR [ebp+0xc],0x0
+  100a8e:	75 10                	jne    100aa0 <number+0xe6>
+  100a90:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100a93:	8d 50 01             	lea    edx,[eax+0x1]
+  100a96:	89 55 f0             	mov    DWORD PTR [ebp-0x10],edx
+  100a99:	c6 44 05 c4 30       	mov    BYTE PTR [ebp+eax*1-0x3c],0x30
+  100a9e:	eb 35                	jmp    100ad5 <number+0x11b>
+  100aa0:	eb 2d                	jmp    100acf <number+0x115>
+  100aa2:	8b 4d f0             	mov    ecx,DWORD PTR [ebp-0x10]
+  100aa5:	8d 41 01             	lea    eax,[ecx+0x1]
+  100aa8:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  100aab:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100aae:	ba 00 00 00 00       	mov    edx,0x0
+  100ab3:	8b 5d 10             	mov    ebx,DWORD PTR [ebp+0x10]
+  100ab6:	f7 f3                	div    ebx
+  100ab8:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  100abb:	89 55 e8             	mov    DWORD PTR [ebp-0x18],edx
+  100abe:	8b 45 e8             	mov    eax,DWORD PTR [ebp-0x18]
+  100ac1:	89 c2                	mov    edx,eax
+  100ac3:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  100ac6:	01 d0                	add    eax,edx
+  100ac8:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100acb:	88 44 0d c4          	mov    BYTE PTR [ebp+ecx*1-0x3c],al
+  100acf:	83 7d 0c 00          	cmp    DWORD PTR [ebp+0xc],0x0
+  100ad3:	75 cd                	jne    100aa2 <number+0xe8>
+  100ad5:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100ad8:	3b 45 18             	cmp    eax,DWORD PTR [ebp+0x18]
+  100adb:	7e 06                	jle    100ae3 <number+0x129>
+  100add:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100ae0:	89 45 18             	mov    DWORD PTR [ebp+0x18],eax
+  100ae3:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+  100ae6:	29 45 14             	sub    DWORD PTR [ebp+0x14],eax
+  100ae9:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100aec:	83 e0 11             	and    eax,0x11
+  100aef:	85 c0                	test   eax,eax
+  100af1:	75 1b                	jne    100b0e <number+0x154>
+  100af3:	eb 0c                	jmp    100b01 <number+0x147>
+  100af5:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100af8:	8d 50 01             	lea    edx,[eax+0x1]
+  100afb:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100afe:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100b01:	8b 45 14             	mov    eax,DWORD PTR [ebp+0x14]
+  100b04:	8d 50 ff             	lea    edx,[eax-0x1]
+  100b07:	89 55 14             	mov    DWORD PTR [ebp+0x14],edx
+  100b0a:	85 c0                	test   eax,eax
+  100b0c:	7f e7                	jg     100af5 <number+0x13b>
+  100b0e:	80 7d fb 00          	cmp    BYTE PTR [ebp-0x5],0x0
+  100b12:	74 0f                	je     100b23 <number+0x169>
+  100b14:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b17:	8d 50 01             	lea    edx,[eax+0x1]
+  100b1a:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b1d:	0f b6 55 fb          	movzx  edx,BYTE PTR [ebp-0x5]
+  100b21:	88 10                	mov    BYTE PTR [eax],dl
+  100b23:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100b26:	83 e0 20             	and    eax,0x20
+  100b29:	85 c0                	test   eax,eax
+  100b2b:	74 38                	je     100b65 <number+0x1ab>
+  100b2d:	83 7d 10 08          	cmp    DWORD PTR [ebp+0x10],0x8
+  100b31:	75 0e                	jne    100b41 <number+0x187>
+  100b33:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b36:	8d 50 01             	lea    edx,[eax+0x1]
+  100b39:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b3c:	c6 00 30             	mov    BYTE PTR [eax],0x30
+  100b3f:	eb 24                	jmp    100b65 <number+0x1ab>
+  100b41:	83 7d 10 10          	cmp    DWORD PTR [ebp+0x10],0x10
+  100b45:	75 1e                	jne    100b65 <number+0x1ab>
+  100b47:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b4a:	8d 50 01             	lea    edx,[eax+0x1]
+  100b4d:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b50:	c6 00 30             	mov    BYTE PTR [eax],0x30
+  100b53:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b56:	8d 50 01             	lea    edx,[eax+0x1]
+  100b59:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b5c:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+  100b5f:	0f b6 52 21          	movzx  edx,BYTE PTR [edx+0x21]
+  100b63:	88 10                	mov    BYTE PTR [eax],dl
+  100b65:	8b 45 1c             	mov    eax,DWORD PTR [ebp+0x1c]
+  100b68:	83 e0 10             	and    eax,0x10
+  100b6b:	85 c0                	test   eax,eax
+  100b6d:	75 1e                	jne    100b8d <number+0x1d3>
+  100b6f:	eb 0f                	jmp    100b80 <number+0x1c6>
+  100b71:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b74:	8d 50 01             	lea    edx,[eax+0x1]
+  100b77:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b7a:	0f b6 55 ef          	movzx  edx,BYTE PTR [ebp-0x11]
+  100b7e:	88 10                	mov    BYTE PTR [eax],dl
+  100b80:	8b 45 14             	mov    eax,DWORD PTR [ebp+0x14]
+  100b83:	8d 50 ff             	lea    edx,[eax-0x1]
+  100b86:	89 55 14             	mov    DWORD PTR [ebp+0x14],edx
+  100b89:	85 c0                	test   eax,eax
+  100b8b:	7f e4                	jg     100b71 <number+0x1b7>
+  100b8d:	eb 0c                	jmp    100b9b <number+0x1e1>
+  100b8f:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100b92:	8d 50 01             	lea    edx,[eax+0x1]
+  100b95:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100b98:	c6 00 30             	mov    BYTE PTR [eax],0x30
+  100b9b:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+  100b9e:	8d 50 ff             	lea    edx,[eax-0x1]
+  100ba1:	89 55 18             	mov    DWORD PTR [ebp+0x18],edx
+  100ba4:	3b 45 f0             	cmp    eax,DWORD PTR [ebp-0x10]
+  100ba7:	7f e6                	jg     100b8f <number+0x1d5>
+  100ba9:	eb 16                	jmp    100bc1 <number+0x207>
+  100bab:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100bae:	8d 50 01             	lea    edx,[eax+0x1]
+  100bb1:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100bb4:	8d 4d c4             	lea    ecx,[ebp-0x3c]
+  100bb7:	8b 55 f0             	mov    edx,DWORD PTR [ebp-0x10]
+  100bba:	01 ca                	add    edx,ecx
+  100bbc:	0f b6 12             	movzx  edx,BYTE PTR [edx]
+  100bbf:	88 10                	mov    BYTE PTR [eax],dl
+  100bc1:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100bc4:	8d 50 ff             	lea    edx,[eax-0x1]
+  100bc7:	89 55 f0             	mov    DWORD PTR [ebp-0x10],edx
+  100bca:	85 c0                	test   eax,eax
+  100bcc:	7f dd                	jg     100bab <number+0x1f1>
+  100bce:	eb 0c                	jmp    100bdc <number+0x222>
+  100bd0:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100bd3:	8d 50 01             	lea    edx,[eax+0x1]
+  100bd6:	89 55 08             	mov    DWORD PTR [ebp+0x8],edx
+  100bd9:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100bdc:	8b 45 14             	mov    eax,DWORD PTR [ebp+0x14]
+  100bdf:	8d 50 ff             	lea    edx,[eax-0x1]
+  100be2:	89 55 14             	mov    DWORD PTR [ebp+0x14],edx
+  100be5:	85 c0                	test   eax,eax
+  100be7:	7f e7                	jg     100bd0 <number+0x216>
+  100be9:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100bec:	83 c4 40             	add    esp,0x40
+  100bef:	5b                   	pop    ebx
+  100bf0:	5d                   	pop    ebp
+  100bf1:	c3                   	ret    
+
+00100bf2 <vsprintf>:
+  100bf2:	55                   	push   ebp
+  100bf3:	89 e5                	mov    ebp,esp
+  100bf5:	83 ec 48             	sub    esp,0x48
+  100bf8:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100bfb:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100bfe:	e9 14 04 00 00       	jmp    101017 <vsprintf+0x425>
+  100c03:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c06:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100c09:	3c 25                	cmp    al,0x25
+  100c0b:	74 16                	je     100c23 <vsprintf+0x31>
+  100c0d:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100c10:	8d 50 01             	lea    edx,[eax+0x1]
+  100c13:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100c16:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  100c19:	0f b6 12             	movzx  edx,BYTE PTR [edx]
+  100c1c:	88 10                	mov    BYTE PTR [eax],dl
+  100c1e:	e9 eb 03 00 00       	jmp    10100e <vsprintf+0x41c>
+  100c23:	c7 45 e4 00 00 00 00 	mov    DWORD PTR [ebp-0x1c],0x0
+  100c2a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c2d:	83 c0 01             	add    eax,0x1
+  100c30:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  100c33:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c36:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100c39:	0f be c0             	movsx  eax,al
+  100c3c:	83 e8 20             	sub    eax,0x20
+  100c3f:	83 f8 10             	cmp    eax,0x10
+  100c42:	77 27                	ja     100c6b <vsprintf+0x79>
+  100c44:	8b 04 85 6c 20 10 00 	mov    eax,DWORD PTR [eax*4+0x10206c]
+  100c4b:	ff e0                	jmp    eax
+  100c4d:	83 4d e4 10          	or     DWORD PTR [ebp-0x1c],0x10
+  100c51:	eb d7                	jmp    100c2a <vsprintf+0x38>
+  100c53:	83 4d e4 04          	or     DWORD PTR [ebp-0x1c],0x4
+  100c57:	eb d1                	jmp    100c2a <vsprintf+0x38>
+  100c59:	83 4d e4 08          	or     DWORD PTR [ebp-0x1c],0x8
+  100c5d:	eb cb                	jmp    100c2a <vsprintf+0x38>
+  100c5f:	83 4d e4 20          	or     DWORD PTR [ebp-0x1c],0x20
+  100c63:	eb c5                	jmp    100c2a <vsprintf+0x38>
+  100c65:	83 4d e4 01          	or     DWORD PTR [ebp-0x1c],0x1
+  100c69:	eb bf                	jmp    100c2a <vsprintf+0x38>
+  100c6b:	c7 45 e0 ff ff ff ff 	mov    DWORD PTR [ebp-0x20],0xffffffff
+  100c72:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c75:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100c78:	3c 2f                	cmp    al,0x2f
+  100c7a:	7e 1a                	jle    100c96 <vsprintf+0xa4>
+  100c7c:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c7f:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100c82:	3c 39                	cmp    al,0x39
+  100c84:	7f 10                	jg     100c96 <vsprintf+0xa4>
+  100c86:	8d 45 0c             	lea    eax,[ebp+0xc]
+  100c89:	89 04 24             	mov    DWORD PTR [esp],eax
+  100c8c:	e8 cf fc ff ff       	call   100960 <skip_atoi>
+  100c91:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+  100c94:	eb 25                	jmp    100cbb <vsprintf+0xc9>
+  100c96:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100c99:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100c9c:	3c 2a                	cmp    al,0x2a
+  100c9e:	75 1b                	jne    100cbb <vsprintf+0xc9>
+  100ca0:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100ca3:	8d 50 04             	lea    edx,[eax+0x4]
+  100ca6:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100ca9:	8b 00                	mov    eax,DWORD PTR [eax]
+  100cab:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+  100cae:	83 7d e0 00          	cmp    DWORD PTR [ebp-0x20],0x0
+  100cb2:	79 07                	jns    100cbb <vsprintf+0xc9>
+  100cb4:	f7 5d e0             	neg    DWORD PTR [ebp-0x20]
+  100cb7:	83 4d e4 10          	or     DWORD PTR [ebp-0x1c],0x10
+  100cbb:	c7 45 dc ff ff ff ff 	mov    DWORD PTR [ebp-0x24],0xffffffff
+  100cc2:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100cc5:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100cc8:	3c 2e                	cmp    al,0x2e
+  100cca:	75 52                	jne    100d1e <vsprintf+0x12c>
+  100ccc:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100ccf:	83 c0 01             	add    eax,0x1
+  100cd2:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  100cd5:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100cd8:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100cdb:	3c 2f                	cmp    al,0x2f
+  100cdd:	7e 1a                	jle    100cf9 <vsprintf+0x107>
+  100cdf:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100ce2:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100ce5:	3c 39                	cmp    al,0x39
+  100ce7:	7f 10                	jg     100cf9 <vsprintf+0x107>
+  100ce9:	8d 45 0c             	lea    eax,[ebp+0xc]
+  100cec:	89 04 24             	mov    DWORD PTR [esp],eax
+  100cef:	e8 6c fc ff ff       	call   100960 <skip_atoi>
+  100cf4:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+  100cf7:	eb 18                	jmp    100d11 <vsprintf+0x11f>
+  100cf9:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100cfc:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100cff:	3c 2a                	cmp    al,0x2a
+  100d01:	75 0e                	jne    100d11 <vsprintf+0x11f>
+  100d03:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100d06:	8d 50 04             	lea    edx,[eax+0x4]
+  100d09:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100d0c:	8b 00                	mov    eax,DWORD PTR [eax]
+  100d0e:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+  100d11:	83 7d dc 00          	cmp    DWORD PTR [ebp-0x24],0x0
+  100d15:	79 07                	jns    100d1e <vsprintf+0x12c>
+  100d17:	c7 45 dc 00 00 00 00 	mov    DWORD PTR [ebp-0x24],0x0
+  100d1e:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100d21:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100d24:	3c 68                	cmp    al,0x68
+  100d26:	74 14                	je     100d3c <vsprintf+0x14a>
+  100d28:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100d2b:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100d2e:	3c 6c                	cmp    al,0x6c
+  100d30:	74 0a                	je     100d3c <vsprintf+0x14a>
+  100d32:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100d35:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100d38:	3c 4c                	cmp    al,0x4c
+  100d3a:	75 09                	jne    100d45 <vsprintf+0x153>
+  100d3c:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100d3f:	83 c0 01             	add    eax,0x1
+  100d42:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  100d45:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100d48:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100d4b:	0f be c0             	movsx  eax,al
+  100d4e:	83 e8 58             	sub    eax,0x58
+  100d51:	83 f8 20             	cmp    eax,0x20
+  100d54:	0f 87 77 02 00 00    	ja     100fd1 <vsprintf+0x3df>
+  100d5a:	8b 04 85 b0 20 10 00 	mov    eax,DWORD PTR [eax*4+0x1020b0]
+  100d61:	ff e0                	jmp    eax
+  100d63:	8b 45 e4             	mov    eax,DWORD PTR [ebp-0x1c]
+  100d66:	83 e0 10             	and    eax,0x10
+  100d69:	85 c0                	test   eax,eax
+  100d6b:	75 18                	jne    100d85 <vsprintf+0x193>
+  100d6d:	eb 0c                	jmp    100d7b <vsprintf+0x189>
+  100d6f:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100d72:	8d 50 01             	lea    edx,[eax+0x1]
+  100d75:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100d78:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100d7b:	83 6d e0 01          	sub    DWORD PTR [ebp-0x20],0x1
+  100d7f:	83 7d e0 00          	cmp    DWORD PTR [ebp-0x20],0x0
+  100d83:	7f ea                	jg     100d6f <vsprintf+0x17d>
+  100d85:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100d88:	8d 50 01             	lea    edx,[eax+0x1]
+  100d8b:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100d8e:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+  100d91:	8d 4a 04             	lea    ecx,[edx+0x4]
+  100d94:	89 4d 10             	mov    DWORD PTR [ebp+0x10],ecx
+  100d97:	8b 12                	mov    edx,DWORD PTR [edx]
+  100d99:	88 10                	mov    BYTE PTR [eax],dl
+  100d9b:	eb 0c                	jmp    100da9 <vsprintf+0x1b7>
+  100d9d:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100da0:	8d 50 01             	lea    edx,[eax+0x1]
+  100da3:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100da6:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100da9:	83 6d e0 01          	sub    DWORD PTR [ebp-0x20],0x1
+  100dad:	83 7d e0 00          	cmp    DWORD PTR [ebp-0x20],0x0
+  100db1:	7f ea                	jg     100d9d <vsprintf+0x1ab>
+  100db3:	e9 56 02 00 00       	jmp    10100e <vsprintf+0x41c>
+  100db8:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100dbb:	8d 50 04             	lea    edx,[eax+0x4]
+  100dbe:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100dc1:	8b 00                	mov    eax,DWORD PTR [eax]
+  100dc3:	89 45 e8             	mov    DWORD PTR [ebp-0x18],eax
+  100dc6:	8b 45 e8             	mov    eax,DWORD PTR [ebp-0x18]
+  100dc9:	89 04 24             	mov    DWORD PTR [esp],eax
+  100dcc:	e8 2a f3 ff ff       	call   1000fb <strlen>
+  100dd1:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100dd4:	83 7d dc 00          	cmp    DWORD PTR [ebp-0x24],0x0
+  100dd8:	79 08                	jns    100de2 <vsprintf+0x1f0>
+  100dda:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  100ddd:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+  100de0:	eb 0e                	jmp    100df0 <vsprintf+0x1fe>
+  100de2:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  100de5:	3b 45 dc             	cmp    eax,DWORD PTR [ebp-0x24]
+  100de8:	7e 06                	jle    100df0 <vsprintf+0x1fe>
+  100dea:	8b 45 dc             	mov    eax,DWORD PTR [ebp-0x24]
+  100ded:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  100df0:	8b 45 e4             	mov    eax,DWORD PTR [ebp-0x1c]
+  100df3:	83 e0 10             	and    eax,0x10
+  100df6:	85 c0                	test   eax,eax
+  100df8:	75 1c                	jne    100e16 <vsprintf+0x224>
+  100dfa:	eb 0c                	jmp    100e08 <vsprintf+0x216>
+  100dfc:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100dff:	8d 50 01             	lea    edx,[eax+0x1]
+  100e02:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100e05:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100e08:	8b 45 e0             	mov    eax,DWORD PTR [ebp-0x20]
+  100e0b:	8d 50 ff             	lea    edx,[eax-0x1]
+  100e0e:	89 55 e0             	mov    DWORD PTR [ebp-0x20],edx
+  100e11:	3b 45 f4             	cmp    eax,DWORD PTR [ebp-0xc]
+  100e14:	7f e6                	jg     100dfc <vsprintf+0x20a>
+  100e16:	c7 45 f0 00 00 00 00 	mov    DWORD PTR [ebp-0x10],0x0
+  100e1d:	eb 1b                	jmp    100e3a <vsprintf+0x248>
+  100e1f:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100e22:	8d 50 01             	lea    edx,[eax+0x1]
+  100e25:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100e28:	8b 55 e8             	mov    edx,DWORD PTR [ebp-0x18]
+  100e2b:	8d 4a 01             	lea    ecx,[edx+0x1]
+  100e2e:	89 4d e8             	mov    DWORD PTR [ebp-0x18],ecx
+  100e31:	0f b6 12             	movzx  edx,BYTE PTR [edx]
+  100e34:	88 10                	mov    BYTE PTR [eax],dl
+  100e36:	83 45 f0 01          	add    DWORD PTR [ebp-0x10],0x1
+  100e3a:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  100e3d:	3b 45 f4             	cmp    eax,DWORD PTR [ebp-0xc]
+  100e40:	7c dd                	jl     100e1f <vsprintf+0x22d>
+  100e42:	eb 0c                	jmp    100e50 <vsprintf+0x25e>
+  100e44:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100e47:	8d 50 01             	lea    edx,[eax+0x1]
+  100e4a:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100e4d:	c6 00 20             	mov    BYTE PTR [eax],0x20
+  100e50:	8b 45 e0             	mov    eax,DWORD PTR [ebp-0x20]
+  100e53:	8d 50 ff             	lea    edx,[eax-0x1]
+  100e56:	89 55 e0             	mov    DWORD PTR [ebp-0x20],edx
+  100e59:	3b 45 f4             	cmp    eax,DWORD PTR [ebp-0xc]
+  100e5c:	7f e6                	jg     100e44 <vsprintf+0x252>
+  100e5e:	e9 ab 01 00 00       	jmp    10100e <vsprintf+0x41c>
+  100e63:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100e66:	8d 50 04             	lea    edx,[eax+0x4]
+  100e69:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100e6c:	8b 00                	mov    eax,DWORD PTR [eax]
+  100e6e:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100e71:	89 54 24 14          	mov    DWORD PTR [esp+0x14],edx
+  100e75:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  100e78:	89 54 24 10          	mov    DWORD PTR [esp+0x10],edx
+  100e7c:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100e7f:	89 54 24 0c          	mov    DWORD PTR [esp+0xc],edx
+  100e83:	c7 44 24 08 08 00 00 	mov    DWORD PTR [esp+0x8],0x8
+  100e8a:	00 
+  100e8b:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100e8f:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100e92:	89 04 24             	mov    DWORD PTR [esp],eax
+  100e95:	e8 20 fb ff ff       	call   1009ba <number>
+  100e9a:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100e9d:	e9 6c 01 00 00       	jmp    10100e <vsprintf+0x41c>
+  100ea2:	83 7d e0 ff          	cmp    DWORD PTR [ebp-0x20],0xffffffff
+  100ea6:	75 0b                	jne    100eb3 <vsprintf+0x2c1>
+  100ea8:	c7 45 e0 08 00 00 00 	mov    DWORD PTR [ebp-0x20],0x8
+  100eaf:	83 4d e4 01          	or     DWORD PTR [ebp-0x1c],0x1
+  100eb3:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100eb6:	8d 50 04             	lea    edx,[eax+0x4]
+  100eb9:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100ebc:	8b 00                	mov    eax,DWORD PTR [eax]
+  100ebe:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100ec1:	89 54 24 14          	mov    DWORD PTR [esp+0x14],edx
+  100ec5:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  100ec8:	89 54 24 10          	mov    DWORD PTR [esp+0x10],edx
+  100ecc:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100ecf:	89 54 24 0c          	mov    DWORD PTR [esp+0xc],edx
+  100ed3:	c7 44 24 08 10 00 00 	mov    DWORD PTR [esp+0x8],0x10
+  100eda:	00 
+  100edb:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100edf:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100ee2:	89 04 24             	mov    DWORD PTR [esp],eax
+  100ee5:	e8 d0 fa ff ff       	call   1009ba <number>
+  100eea:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100eed:	e9 1c 01 00 00       	jmp    10100e <vsprintf+0x41c>
+  100ef2:	83 4d e4 40          	or     DWORD PTR [ebp-0x1c],0x40
+  100ef6:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100ef9:	8d 50 04             	lea    edx,[eax+0x4]
+  100efc:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100eff:	8b 00                	mov    eax,DWORD PTR [eax]
+  100f01:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100f04:	89 54 24 14          	mov    DWORD PTR [esp+0x14],edx
+  100f08:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  100f0b:	89 54 24 10          	mov    DWORD PTR [esp+0x10],edx
+  100f0f:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100f12:	89 54 24 0c          	mov    DWORD PTR [esp+0xc],edx
+  100f16:	c7 44 24 08 10 00 00 	mov    DWORD PTR [esp+0x8],0x10
+  100f1d:	00 
+  100f1e:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100f22:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100f25:	89 04 24             	mov    DWORD PTR [esp],eax
+  100f28:	e8 8d fa ff ff       	call   1009ba <number>
+  100f2d:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100f30:	e9 d9 00 00 00       	jmp    10100e <vsprintf+0x41c>
+  100f35:	83 4d e4 02          	or     DWORD PTR [ebp-0x1c],0x2
+  100f39:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100f3c:	8d 50 04             	lea    edx,[eax+0x4]
+  100f3f:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100f42:	8b 00                	mov    eax,DWORD PTR [eax]
+  100f44:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100f47:	89 54 24 14          	mov    DWORD PTR [esp+0x14],edx
+  100f4b:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  100f4e:	89 54 24 10          	mov    DWORD PTR [esp+0x10],edx
+  100f52:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100f55:	89 54 24 0c          	mov    DWORD PTR [esp+0xc],edx
+  100f59:	c7 44 24 08 0a 00 00 	mov    DWORD PTR [esp+0x8],0xa
+  100f60:	00 
+  100f61:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100f65:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100f68:	89 04 24             	mov    DWORD PTR [esp],eax
+  100f6b:	e8 4a fa ff ff       	call   1009ba <number>
+  100f70:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100f73:	e9 96 00 00 00       	jmp    10100e <vsprintf+0x41c>
+  100f78:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100f7b:	8d 50 04             	lea    edx,[eax+0x4]
+  100f7e:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100f81:	8b 00                	mov    eax,DWORD PTR [eax]
+  100f83:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+  100f86:	89 54 24 14          	mov    DWORD PTR [esp+0x14],edx
+  100f8a:	8b 55 dc             	mov    edx,DWORD PTR [ebp-0x24]
+  100f8d:	89 54 24 10          	mov    DWORD PTR [esp+0x10],edx
+  100f91:	8b 55 e0             	mov    edx,DWORD PTR [ebp-0x20]
+  100f94:	89 54 24 0c          	mov    DWORD PTR [esp+0xc],edx
+  100f98:	c7 44 24 08 02 00 00 	mov    DWORD PTR [esp+0x8],0x2
+  100f9f:	00 
+  100fa0:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  100fa4:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100fa7:	89 04 24             	mov    DWORD PTR [esp],eax
+  100faa:	e8 0b fa ff ff       	call   1009ba <number>
+  100faf:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+  100fb2:	eb 5a                	jmp    10100e <vsprintf+0x41c>
+  100fb4:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  100fb7:	8d 50 04             	lea    edx,[eax+0x4]
+  100fba:	89 55 10             	mov    DWORD PTR [ebp+0x10],edx
+  100fbd:	8b 00                	mov    eax,DWORD PTR [eax]
+  100fbf:	89 45 d8             	mov    DWORD PTR [ebp-0x28],eax
+  100fc2:	8b 55 ec             	mov    edx,DWORD PTR [ebp-0x14]
+  100fc5:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  100fc8:	29 c2                	sub    edx,eax
+  100fca:	8b 45 d8             	mov    eax,DWORD PTR [ebp-0x28]
+  100fcd:	89 10                	mov    DWORD PTR [eax],edx
+  100fcf:	eb 3d                	jmp    10100e <vsprintf+0x41c>
+  100fd1:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100fd4:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100fd7:	3c 25                	cmp    al,0x25
+  100fd9:	74 0c                	je     100fe7 <vsprintf+0x3f5>
+  100fdb:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100fde:	8d 50 01             	lea    edx,[eax+0x1]
+  100fe1:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100fe4:	c6 00 25             	mov    BYTE PTR [eax],0x25
+  100fe7:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  100fea:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  100fed:	84 c0                	test   al,al
+  100fef:	74 13                	je     101004 <vsprintf+0x412>
+  100ff1:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  100ff4:	8d 50 01             	lea    edx,[eax+0x1]
+  100ff7:	89 55 ec             	mov    DWORD PTR [ebp-0x14],edx
+  100ffa:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+  100ffd:	0f b6 12             	movzx  edx,BYTE PTR [edx]
+  101000:	88 10                	mov    BYTE PTR [eax],dl
+  101002:	eb 09                	jmp    10100d <vsprintf+0x41b>
+  101004:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  101007:	83 e8 01             	sub    eax,0x1
+  10100a:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  10100d:	90                   	nop
+  10100e:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  101011:	83 c0 01             	add    eax,0x1
+  101014:	89 45 0c             	mov    DWORD PTR [ebp+0xc],eax
+  101017:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+  10101a:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+  10101d:	84 c0                	test   al,al
+  10101f:	0f 85 de fb ff ff    	jne    100c03 <vsprintf+0x11>
+  101025:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  101028:	c6 00 00             	mov    BYTE PTR [eax],0x0
+  10102b:	8b 55 ec             	mov    edx,DWORD PTR [ebp-0x14]
+  10102e:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  101031:	29 c2                	sub    edx,eax
+  101033:	89 d0                	mov    eax,edx
+  101035:	c9                   	leave  
+  101036:	c3                   	ret    
+
+00101037 <init_debug>:
+  101037:	55                   	push   ebp
+  101038:	89 e5                	mov    ebp,esp
+  10103a:	83 ec 28             	sub    esp,0x28
+  10103d:	8b 15 00 b0 10 00    	mov    edx,DWORD PTR ds:0x10b000
+  101043:	8d 45 e8             	lea    eax,[ebp-0x18]
+  101046:	89 54 24 04          	mov    DWORD PTR [esp+0x4],edx
+  10104a:	89 04 24             	mov    DWORD PTR [esp],eax
+  10104d:	e8 fe f1 ff ff       	call   100250 <elf_from_multiboot>
+  101052:	83 ec 04             	sub    esp,0x4
+  101055:	8b 45 e8             	mov    eax,DWORD PTR [ebp-0x18]
+  101058:	a3 20 b8 10 00       	mov    ds:0x10b820,eax
+  10105d:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+  101060:	a3 24 b8 10 00       	mov    ds:0x10b824,eax
+  101065:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  101068:	a3 28 b8 10 00       	mov    ds:0x10b828,eax
+  10106d:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  101070:	a3 2c b8 10 00       	mov    ds:0x10b82c,eax
+  101075:	c9                   	leave  
+  101076:	c3                   	ret    
+
+00101077 <print_cur_status>:
+  101077:	55                   	push   ebp
+  101078:	89 e5                	mov    ebp,esp
+  10107a:	83 ec 28             	sub    esp,0x28
+  10107d:	8c 4d f6             	mov    WORD PTR [ebp-0xa],cs
+  101080:	8c 5d f4             	mov    WORD PTR [ebp-0xc],ds
+  101083:	8c 45 f2             	mov    WORD PTR [ebp-0xe],es
+  101086:	8c 55 f0             	mov    WORD PTR [ebp-0x10],ss
+  101089:	0f b7 45 f6          	movzx  eax,WORD PTR [ebp-0xa]
+  10108d:	0f b7 c0             	movzx  eax,ax
+  101090:	83 e0 03             	and    eax,0x3
+  101093:	89 c2                	mov    edx,eax
+  101095:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  10109a:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  10109e:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1010a2:	c7 04 24 34 21 10 00 	mov    DWORD PTR [esp],0x102134
+  1010a9:	e8 20 f8 ff ff       	call   1008ce <printk>
+  1010ae:	0f b7 45 f6          	movzx  eax,WORD PTR [ebp-0xa]
+  1010b2:	0f b7 d0             	movzx  edx,ax
+  1010b5:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  1010ba:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  1010be:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1010c2:	c7 04 24 42 21 10 00 	mov    DWORD PTR [esp],0x102142
+  1010c9:	e8 00 f8 ff ff       	call   1008ce <printk>
+  1010ce:	0f b7 45 f4          	movzx  eax,WORD PTR [ebp-0xc]
+  1010d2:	0f b7 d0             	movzx  edx,ax
+  1010d5:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  1010da:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  1010de:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  1010e2:	c7 04 24 50 21 10 00 	mov    DWORD PTR [esp],0x102150
+  1010e9:	e8 e0 f7 ff ff       	call   1008ce <printk>
+  1010ee:	0f b7 45 f2          	movzx  eax,WORD PTR [ebp-0xe]
+  1010f2:	0f b7 d0             	movzx  edx,ax
+  1010f5:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  1010fa:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  1010fe:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  101102:	c7 04 24 5e 21 10 00 	mov    DWORD PTR [esp],0x10215e
+  101109:	e8 c0 f7 ff ff       	call   1008ce <printk>
+  10110e:	0f b7 45 f0          	movzx  eax,WORD PTR [ebp-0x10]
+  101112:	0f b7 d0             	movzx  edx,ax
+  101115:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  10111a:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+  10111e:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  101122:	c7 04 24 6c 21 10 00 	mov    DWORD PTR [esp],0x10216c
+  101129:	e8 a0 f7 ff ff       	call   1008ce <printk>
+  10112e:	a1 30 b8 10 00       	mov    eax,ds:0x10b830
+  101133:	83 c0 01             	add    eax,0x1
+  101136:	a3 30 b8 10 00       	mov    ds:0x10b830,eax
+  10113b:	c9                   	leave  
+  10113c:	c3                   	ret    
+
+0010113d <panic>:
+  10113d:	55                   	push   ebp
+  10113e:	89 e5                	mov    ebp,esp
+  101140:	83 ec 18             	sub    esp,0x18
+  101143:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  101146:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
+  10114a:	c7 04 24 7a 21 10 00 	mov    DWORD PTR [esp],0x10217a
+  101151:	e8 78 f7 ff ff       	call   1008ce <printk>
+  101156:	e8 0e 00 00 00       	call   101169 <print_stack_trace>
+  10115b:	c7 04 24 90 21 10 00 	mov    DWORD PTR [esp],0x102190
+  101162:	e8 67 f7 ff ff       	call   1008ce <printk>
+  101167:	eb fe                	jmp    101167 <panic+0x2a>
+
+00101169 <print_stack_trace>:
+  101169:	55                   	push   ebp
+  10116a:	89 e5                	mov    ebp,esp
+  10116c:	83 ec 28             	sub    esp,0x28
+  10116f:	89 e8                	mov    eax,ebp
+  101171:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  101174:	eb 3f                	jmp    1011b5 <print_stack_trace+0x4c>
+  101176:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  101179:	83 c0 04             	add    eax,0x4
+  10117c:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  10117f:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+  101182:	8b 00                	mov    eax,DWORD PTR [eax]
+  101184:	c7 44 24 04 20 b8 10 	mov    DWORD PTR [esp+0x4],0x10b820
+  10118b:	00 
+  10118c:	89 04 24             	mov    DWORD PTR [esp],eax
+  10118f:	e8 de f1 ff ff       	call   100372 <elf_lookup_symbol>
+  101194:	8b 55 f0             	mov    edx,DWORD PTR [ebp-0x10]
+  101197:	8b 12                	mov    edx,DWORD PTR [edx]
+  101199:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
+  10119d:	89 54 24 04          	mov    DWORD PTR [esp+0x4],edx
+  1011a1:	c7 04 24 95 21 10 00 	mov    DWORD PTR [esp],0x102195
+  1011a8:	e8 21 f7 ff ff       	call   1008ce <printk>
+  1011ad:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  1011b0:	8b 00                	mov    eax,DWORD PTR [eax]
+  1011b2:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+  1011b5:	83 7d f4 00          	cmp    DWORD PTR [ebp-0xc],0x0
+  1011b9:	75 bb                	jne    101176 <print_stack_trace+0xd>
+  1011bb:	c9                   	leave  
+  1011bc:	c3                   	ret    
+
+001011bd <kern_entry>:
+  1011bd:	55                   	push   ebp
+  1011be:	89 e5                	mov    ebp,esp
+  1011c0:	83 ec 28             	sub    esp,0x28
+  1011c3:	e8 5e f3 ff ff       	call   100526 <console_clear>
+  1011c8:	c7 44 24 08 0c 00 00 	mov    DWORD PTR [esp+0x8],0xc
+  1011cf:	00 
+  1011d0:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1011d7:	00 
+  1011d8:	c7 04 24 a4 21 10 00 	mov    DWORD PTR [esp],0x1021a4
+  1011df:	e8 f2 f4 ff ff       	call   1006d6 <console_write_color>
+  1011e4:	c7 44 24 08 0c 00 00 	mov    DWORD PTR [esp+0x8],0xc
+  1011eb:	00 
+  1011ec:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  1011f3:	00 
+  1011f4:	c7 04 24 cb 21 10 00 	mov    DWORD PTR [esp],0x1021cb
+  1011fb:	e8 d6 f4 ff ff       	call   1006d6 <console_write_color>
+  101200:	c7 45 f4 64 00 00 00 	mov    DWORD PTR [ebp-0xc],0x64
+  101207:	c7 04 24 dc 21 10 00 	mov    DWORD PTR [esp],0x1021dc
+  10120e:	e8 bb f6 ff ff       	call   1008ce <printk>
+  101213:	c7 44 24 08 09 00 00 	mov    DWORD PTR [esp+0x8],0x9
+  10121a:	00 
+  10121b:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  101222:	00 
+  101223:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  101226:	89 04 24             	mov    DWORD PTR [esp],eax
+  101229:	e8 a6 f5 ff ff       	call   1007d4 <console_write_dec>
+  10122e:	c7 44 24 08 09 00 00 	mov    DWORD PTR [esp+0x8],0x9
+  101235:	00 
+  101236:	c7 44 24 04 00 00 00 	mov    DWORD PTR [esp+0x4],0x0
+  10123d:	00 
+  10123e:	8b 45 f4             	mov    eax,DWORD PTR [ebp-0xc]
+  101241:	89 04 24             	mov    DWORD PTR [esp],eax
+  101244:	e8 c6 f4 ff ff       	call   10070f <console_write_hex>
+  101249:	c7 44 24 04 63 04 00 	mov    DWORD PTR [esp+0x4],0x463
+  101250:	00 
+  101251:	c7 04 24 e8 21 10 00 	mov    DWORD PTR [esp],0x1021e8
+  101258:	e8 71 f6 ff ff       	call   1008ce <printk>
+  10125d:	b8 00 00 00 00       	mov    eax,0x0
+  101262:	c9                   	leave  
+  101263:	c3                   	ret    
+  101264:	66 90                	xchg   ax,ax
+  101266:	66 90                	xchg   ax,ax
+  101268:	66 90                	xchg   ax,ax
+  10126a:	66 90                	xchg   ax,ax
+  10126c:	66 90                	xchg   ax,ax
+  10126e:	66 90                	xchg   ax,ax
+  101270:	66 90                	xchg   ax,ax
+  101272:	66 90                	xchg   ax,ax
+  101274:	66 90                	xchg   ax,ax
+  101276:	66 90                	xchg   ax,ax
+  101278:	66 90                	xchg   ax,ax
+  10127a:	66 90                	xchg   ax,ax
+  10127c:	66 90                	xchg   ax,ax
+  10127e:	66 90                	xchg   ax,ax
+  101280:	66 90                	xchg   ax,ax
+  101282:	66 90                	xchg   ax,ax
+  101284:	66 90                	xchg   ax,ax
+  101286:	66 90                	xchg   ax,ax
+  101288:	66 90                	xchg   ax,ax
+  10128a:	66 90                	xchg   ax,ax
+  10128c:	66 90                	xchg   ax,ax
+  10128e:	66 90                	xchg   ax,ax
+  101290:	66 90                	xchg   ax,ax
+  101292:	66 90                	xchg   ax,ax
+  101294:	66 90                	xchg   ax,ax
+  101296:	66 90                	xchg   ax,ax
+  101298:	66 90                	xchg   ax,ax
+  10129a:	66 90                	xchg   ax,ax
+  10129c:	66 90                	xchg   ax,ax
+  10129e:	66 90                	xchg   ax,ax
+  1012a0:	66 90                	xchg   ax,ax
+  1012a2:	66 90                	xchg   ax,ax
+  1012a4:	66 90                	xchg   ax,ax
+  1012a6:	66 90                	xchg   ax,ax
+  1012a8:	66 90                	xchg   ax,ax
+  1012aa:	66 90                	xchg   ax,ax
+  1012ac:	66 90                	xchg   ax,ax
+  1012ae:	66 90                	xchg   ax,ax
+  1012b0:	66 90                	xchg   ax,ax
+  1012b2:	66 90                	xchg   ax,ax
+  1012b4:	66 90                	xchg   ax,ax
+  1012b6:	66 90                	xchg   ax,ax
+  1012b8:	66 90                	xchg   ax,ax
+  1012ba:	66 90                	xchg   ax,ax
+  1012bc:	66 90                	xchg   ax,ax
+  1012be:	66 90                	xchg   ax,ax
+  1012c0:	66 90                	xchg   ax,ax
+  1012c2:	66 90                	xchg   ax,ax
+  1012c4:	66 90                	xchg   ax,ax
+  1012c6:	66 90                	xchg   ax,ax
+  1012c8:	66 90                	xchg   ax,ax
+  1012ca:	66 90                	xchg   ax,ax
+  1012cc:	66 90                	xchg   ax,ax
+  1012ce:	66 90                	xchg   ax,ax
+  1012d0:	66 90                	xchg   ax,ax
+  1012d2:	66 90                	xchg   ax,ax
+  1012d4:	66 90                	xchg   ax,ax
+  1012d6:	66 90                	xchg   ax,ax
+  1012d8:	66 90                	xchg   ax,ax
+  1012da:	66 90                	xchg   ax,ax
+  1012dc:	66 90                	xchg   ax,ax
+  1012de:	66 90                	xchg   ax,ax
+  1012e0:	66 90                	xchg   ax,ax
+  1012e2:	66 90                	xchg   ax,ax
+  1012e4:	66 90                	xchg   ax,ax
+  1012e6:	66 90                	xchg   ax,ax
+  1012e8:	66 90                	xchg   ax,ax
+  1012ea:	66 90                	xchg   ax,ax
+  1012ec:	66 90                	xchg   ax,ax
+  1012ee:	66 90                	xchg   ax,ax
+  1012f0:	66 90                	xchg   ax,ax
+  1012f2:	66 90                	xchg   ax,ax
+  1012f4:	66 90                	xchg   ax,ax
+  1012f6:	66 90                	xchg   ax,ax
+  1012f8:	66 90                	xchg   ax,ax
+  1012fa:	66 90                	xchg   ax,ax
+  1012fc:	66 90                	xchg   ax,ax
+  1012fe:	66 90                	xchg   ax,ax
+  101300:	66 90                	xchg   ax,ax
+  101302:	66 90                	xchg   ax,ax
+  101304:	66 90                	xchg   ax,ax
+  101306:	66 90                	xchg   ax,ax
+  101308:	66 90                	xchg   ax,ax
+  10130a:	66 90                	xchg   ax,ax
+  10130c:	66 90                	xchg   ax,ax
+  10130e:	66 90                	xchg   ax,ax
+  101310:	66 90                	xchg   ax,ax
+  101312:	66 90                	xchg   ax,ax
+  101314:	66 90                	xchg   ax,ax
+  101316:	66 90                	xchg   ax,ax
+  101318:	66 90                	xchg   ax,ax
+  10131a:	66 90                	xchg   ax,ax
+  10131c:	66 90                	xchg   ax,ax
+  10131e:	66 90                	xchg   ax,ax
+  101320:	66 90                	xchg   ax,ax
+  101322:	66 90                	xchg   ax,ax
+  101324:	66 90                	xchg   ax,ax
+  101326:	66 90                	xchg   ax,ax
+  101328:	66 90                	xchg   ax,ax
+  10132a:	66 90                	xchg   ax,ax
+  10132c:	66 90                	xchg   ax,ax
+  10132e:	66 90                	xchg   ax,ax
+  101330:	66 90                	xchg   ax,ax
+  101332:	66 90                	xchg   ax,ax
+  101334:	66 90                	xchg   ax,ax
+  101336:	66 90                	xchg   ax,ax
+  101338:	66 90                	xchg   ax,ax
+  10133a:	66 90                	xchg   ax,ax
+  10133c:	66 90                	xchg   ax,ax
+  10133e:	66 90                	xchg   ax,ax
+  101340:	66 90                	xchg   ax,ax
+  101342:	66 90                	xchg   ax,ax
+  101344:	66 90                	xchg   ax,ax
+  101346:	66 90                	xchg   ax,ax
+  101348:	66 90                	xchg   ax,ax
+  10134a:	66 90                	xchg   ax,ax
+  10134c:	66 90                	xchg   ax,ax
+  10134e:	66 90                	xchg   ax,ax
+  101350:	66 90                	xchg   ax,ax
+  101352:	66 90                	xchg   ax,ax
+  101354:	66 90                	xchg   ax,ax
+  101356:	66 90                	xchg   ax,ax
+  101358:	66 90                	xchg   ax,ax
+  10135a:	66 90                	xchg   ax,ax
+  10135c:	66 90                	xchg   ax,ax
+  10135e:	66 90                	xchg   ax,ax
+  101360:	66 90                	xchg   ax,ax
+  101362:	66 90                	xchg   ax,ax
+  101364:	66 90                	xchg   ax,ax
+  101366:	66 90                	xchg   ax,ax
+  101368:	66 90                	xchg   ax,ax
+  10136a:	66 90                	xchg   ax,ax
+  10136c:	66 90                	xchg   ax,ax
+  10136e:	66 90                	xchg   ax,ax
+  101370:	66 90                	xchg   ax,ax
+  101372:	66 90                	xchg   ax,ax
+  101374:	66 90                	xchg   ax,ax
+  101376:	66 90                	xchg   ax,ax
+  101378:	66 90                	xchg   ax,ax
+  10137a:	66 90                	xchg   ax,ax
+  10137c:	66 90                	xchg   ax,ax
+  10137e:	66 90                	xchg   ax,ax
+  101380:	66 90                	xchg   ax,ax
+  101382:	66 90                	xchg   ax,ax
+  101384:	66 90                	xchg   ax,ax
+  101386:	66 90                	xchg   ax,ax
+  101388:	66 90                	xchg   ax,ax
+  10138a:	66 90                	xchg   ax,ax
+  10138c:	66 90                	xchg   ax,ax
+  10138e:	66 90                	xchg   ax,ax
+  101390:	66 90                	xchg   ax,ax
+  101392:	66 90                	xchg   ax,ax
+  101394:	66 90                	xchg   ax,ax
+  101396:	66 90                	xchg   ax,ax
+  101398:	66 90                	xchg   ax,ax
+  10139a:	66 90                	xchg   ax,ax
+  10139c:	66 90                	xchg   ax,ax
+  10139e:	66 90                	xchg   ax,ax
+  1013a0:	66 90                	xchg   ax,ax
+  1013a2:	66 90                	xchg   ax,ax
+  1013a4:	66 90                	xchg   ax,ax
+  1013a6:	66 90                	xchg   ax,ax
+  1013a8:	66 90                	xchg   ax,ax
+  1013aa:	66 90                	xchg   ax,ax
+  1013ac:	66 90                	xchg   ax,ax
+  1013ae:	66 90                	xchg   ax,ax
+  1013b0:	66 90                	xchg   ax,ax
+  1013b2:	66 90                	xchg   ax,ax
+  1013b4:	66 90                	xchg   ax,ax
+  1013b6:	66 90                	xchg   ax,ax
+  1013b8:	66 90                	xchg   ax,ax
+  1013ba:	66 90                	xchg   ax,ax
+  1013bc:	66 90                	xchg   ax,ax
+  1013be:	66 90                	xchg   ax,ax
+  1013c0:	66 90                	xchg   ax,ax
+  1013c2:	66 90                	xchg   ax,ax
+  1013c4:	66 90                	xchg   ax,ax
+  1013c6:	66 90                	xchg   ax,ax
+  1013c8:	66 90                	xchg   ax,ax
+  1013ca:	66 90                	xchg   ax,ax
+  1013cc:	66 90                	xchg   ax,ax
+  1013ce:	66 90                	xchg   ax,ax
+  1013d0:	66 90                	xchg   ax,ax
+  1013d2:	66 90                	xchg   ax,ax
+  1013d4:	66 90                	xchg   ax,ax
+  1013d6:	66 90                	xchg   ax,ax
+  1013d8:	66 90                	xchg   ax,ax
+  1013da:	66 90                	xchg   ax,ax
+  1013dc:	66 90                	xchg   ax,ax
+  1013de:	66 90                	xchg   ax,ax
+  1013e0:	66 90                	xchg   ax,ax
+  1013e2:	66 90                	xchg   ax,ax
+  1013e4:	66 90                	xchg   ax,ax
+  1013e6:	66 90                	xchg   ax,ax
+  1013e8:	66 90                	xchg   ax,ax
+  1013ea:	66 90                	xchg   ax,ax
+  1013ec:	66 90                	xchg   ax,ax
+  1013ee:	66 90                	xchg   ax,ax
+  1013f0:	66 90                	xchg   ax,ax
+  1013f2:	66 90                	xchg   ax,ax
+  1013f4:	66 90                	xchg   ax,ax
+  1013f6:	66 90                	xchg   ax,ax
+  1013f8:	66 90                	xchg   ax,ax
+  1013fa:	66 90                	xchg   ax,ax
+  1013fc:	66 90                	xchg   ax,ax
+  1013fe:	66 90                	xchg   ax,ax
+  101400:	66 90                	xchg   ax,ax
+  101402:	66 90                	xchg   ax,ax
+  101404:	66 90                	xchg   ax,ax
+  101406:	66 90                	xchg   ax,ax
+  101408:	66 90                	xchg   ax,ax
+  10140a:	66 90                	xchg   ax,ax
+  10140c:	66 90                	xchg   ax,ax
+  10140e:	66 90                	xchg   ax,ax
+  101410:	66 90                	xchg   ax,ax
+  101412:	66 90                	xchg   ax,ax
+  101414:	66 90                	xchg   ax,ax
+  101416:	66 90                	xchg   ax,ax
+  101418:	66 90                	xchg   ax,ax
+  10141a:	66 90                	xchg   ax,ax
+  10141c:	66 90                	xchg   ax,ax
+  10141e:	66 90                	xchg   ax,ax
+  101420:	66 90                	xchg   ax,ax
+  101422:	66 90                	xchg   ax,ax
+  101424:	66 90                	xchg   ax,ax
+  101426:	66 90                	xchg   ax,ax
+  101428:	66 90                	xchg   ax,ax
+  10142a:	66 90                	xchg   ax,ax
+  10142c:	66 90                	xchg   ax,ax
+  10142e:	66 90                	xchg   ax,ax
+  101430:	66 90                	xchg   ax,ax
+  101432:	66 90                	xchg   ax,ax
+  101434:	66 90                	xchg   ax,ax
+  101436:	66 90                	xchg   ax,ax
+  101438:	66 90                	xchg   ax,ax
+  10143a:	66 90                	xchg   ax,ax
+  10143c:	66 90                	xchg   ax,ax
+  10143e:	66 90                	xchg   ax,ax
+  101440:	66 90                	xchg   ax,ax
+  101442:	66 90                	xchg   ax,ax
+  101444:	66 90                	xchg   ax,ax
+  101446:	66 90                	xchg   ax,ax
+  101448:	66 90                	xchg   ax,ax
+  10144a:	66 90                	xchg   ax,ax
+  10144c:	66 90                	xchg   ax,ax
+  10144e:	66 90                	xchg   ax,ax
+  101450:	66 90                	xchg   ax,ax
+  101452:	66 90                	xchg   ax,ax
+  101454:	66 90                	xchg   ax,ax
+  101456:	66 90                	xchg   ax,ax
+  101458:	66 90                	xchg   ax,ax
+  10145a:	66 90                	xchg   ax,ax
+  10145c:	66 90                	xchg   ax,ax
+  10145e:	66 90                	xchg   ax,ax
+  101460:	66 90                	xchg   ax,ax
+  101462:	66 90                	xchg   ax,ax
+  101464:	66 90                	xchg   ax,ax
+  101466:	66 90                	xchg   ax,ax
+  101468:	66 90                	xchg   ax,ax
+  10146a:	66 90                	xchg   ax,ax
+  10146c:	66 90                	xchg   ax,ax
+  10146e:	66 90                	xchg   ax,ax
+  101470:	66 90                	xchg   ax,ax
+  101472:	66 90                	xchg   ax,ax
+  101474:	66 90                	xchg   ax,ax
+  101476:	66 90                	xchg   ax,ax
+  101478:	66 90                	xchg   ax,ax
+  10147a:	66 90                	xchg   ax,ax
+  10147c:	66 90                	xchg   ax,ax
+  10147e:	66 90                	xchg   ax,ax
+  101480:	66 90                	xchg   ax,ax
+  101482:	66 90                	xchg   ax,ax
+  101484:	66 90                	xchg   ax,ax
+  101486:	66 90                	xchg   ax,ax
+  101488:	66 90                	xchg   ax,ax
+  10148a:	66 90                	xchg   ax,ax
+  10148c:	66 90                	xchg   ax,ax
+  10148e:	66 90                	xchg   ax,ax
+  101490:	66 90                	xchg   ax,ax
+  101492:	66 90                	xchg   ax,ax
+  101494:	66 90                	xchg   ax,ax
+  101496:	66 90                	xchg   ax,ax
+  101498:	66 90                	xchg   ax,ax
+  10149a:	66 90                	xchg   ax,ax
+  10149c:	66 90                	xchg   ax,ax
+  10149e:	66 90                	xchg   ax,ax
+  1014a0:	66 90                	xchg   ax,ax
+  1014a2:	66 90                	xchg   ax,ax
+  1014a4:	66 90                	xchg   ax,ax
+  1014a6:	66 90                	xchg   ax,ax
+  1014a8:	66 90                	xchg   ax,ax
+  1014aa:	66 90                	xchg   ax,ax
+  1014ac:	66 90                	xchg   ax,ax
+  1014ae:	66 90                	xchg   ax,ax
+  1014b0:	66 90                	xchg   ax,ax
+  1014b2:	66 90                	xchg   ax,ax
+  1014b4:	66 90                	xchg   ax,ax
+  1014b6:	66 90                	xchg   ax,ax
+  1014b8:	66 90                	xchg   ax,ax
+  1014ba:	66 90                	xchg   ax,ax
+  1014bc:	66 90                	xchg   ax,ax
+  1014be:	66 90                	xchg   ax,ax
+  1014c0:	66 90                	xchg   ax,ax
+  1014c2:	66 90                	xchg   ax,ax
+  1014c4:	66 90                	xchg   ax,ax
+  1014c6:	66 90                	xchg   ax,ax
+  1014c8:	66 90                	xchg   ax,ax
+  1014ca:	66 90                	xchg   ax,ax
+  1014cc:	66 90                	xchg   ax,ax
+  1014ce:	66 90                	xchg   ax,ax
+  1014d0:	66 90                	xchg   ax,ax
+  1014d2:	66 90                	xchg   ax,ax
+  1014d4:	66 90                	xchg   ax,ax
+  1014d6:	66 90                	xchg   ax,ax
+  1014d8:	66 90                	xchg   ax,ax
+  1014da:	66 90                	xchg   ax,ax
+  1014dc:	66 90                	xchg   ax,ax
+  1014de:	66 90                	xchg   ax,ax
+  1014e0:	66 90                	xchg   ax,ax
+  1014e2:	66 90                	xchg   ax,ax
+  1014e4:	66 90                	xchg   ax,ax
+  1014e6:	66 90                	xchg   ax,ax
+  1014e8:	66 90                	xchg   ax,ax
+  1014ea:	66 90                	xchg   ax,ax
+  1014ec:	66 90                	xchg   ax,ax
+  1014ee:	66 90                	xchg   ax,ax
+  1014f0:	66 90                	xchg   ax,ax
+  1014f2:	66 90                	xchg   ax,ax
+  1014f4:	66 90                	xchg   ax,ax
+  1014f6:	66 90                	xchg   ax,ax
+  1014f8:	66 90                	xchg   ax,ax
+  1014fa:	66 90                	xchg   ax,ax
+  1014fc:	66 90                	xchg   ax,ax
+  1014fe:	66 90                	xchg   ax,ax
+  101500:	66 90                	xchg   ax,ax
+  101502:	66 90                	xchg   ax,ax
+  101504:	66 90                	xchg   ax,ax
+  101506:	66 90                	xchg   ax,ax
+  101508:	66 90                	xchg   ax,ax
+  10150a:	66 90                	xchg   ax,ax
+  10150c:	66 90                	xchg   ax,ax
+  10150e:	66 90                	xchg   ax,ax
+  101510:	66 90                	xchg   ax,ax
+  101512:	66 90                	xchg   ax,ax
+  101514:	66 90                	xchg   ax,ax
+  101516:	66 90                	xchg   ax,ax
+  101518:	66 90                	xchg   ax,ax
+  10151a:	66 90                	xchg   ax,ax
+  10151c:	66 90                	xchg   ax,ax
+  10151e:	66 90                	xchg   ax,ax
+  101520:	66 90                	xchg   ax,ax
+  101522:	66 90                	xchg   ax,ax
+  101524:	66 90                	xchg   ax,ax
+  101526:	66 90                	xchg   ax,ax
+  101528:	66 90                	xchg   ax,ax
+  10152a:	66 90                	xchg   ax,ax
+  10152c:	66 90                	xchg   ax,ax
+  10152e:	66 90                	xchg   ax,ax
+  101530:	66 90                	xchg   ax,ax
+  101532:	66 90                	xchg   ax,ax
+  101534:	66 90                	xchg   ax,ax
+  101536:	66 90                	xchg   ax,ax
+  101538:	66 90                	xchg   ax,ax
+  10153a:	66 90                	xchg   ax,ax
+  10153c:	66 90                	xchg   ax,ax
+  10153e:	66 90                	xchg   ax,ax
+  101540:	66 90                	xchg   ax,ax
+  101542:	66 90                	xchg   ax,ax
+  101544:	66 90                	xchg   ax,ax
+  101546:	66 90                	xchg   ax,ax
+  101548:	66 90                	xchg   ax,ax
+  10154a:	66 90                	xchg   ax,ax
+  10154c:	66 90                	xchg   ax,ax
+  10154e:	66 90                	xchg   ax,ax
+  101550:	66 90                	xchg   ax,ax
+  101552:	66 90                	xchg   ax,ax
+  101554:	66 90                	xchg   ax,ax
+  101556:	66 90                	xchg   ax,ax
+  101558:	66 90                	xchg   ax,ax
+  10155a:	66 90                	xchg   ax,ax
+  10155c:	66 90                	xchg   ax,ax
+  10155e:	66 90                	xchg   ax,ax
+  101560:	66 90                	xchg   ax,ax
+  101562:	66 90                	xchg   ax,ax
+  101564:	66 90                	xchg   ax,ax
+  101566:	66 90                	xchg   ax,ax
+  101568:	66 90                	xchg   ax,ax
+  10156a:	66 90                	xchg   ax,ax
+  10156c:	66 90                	xchg   ax,ax
+  10156e:	66 90                	xchg   ax,ax
+  101570:	66 90                	xchg   ax,ax
+  101572:	66 90                	xchg   ax,ax
+  101574:	66 90                	xchg   ax,ax
+  101576:	66 90                	xchg   ax,ax
+  101578:	66 90                	xchg   ax,ax
+  10157a:	66 90                	xchg   ax,ax
+  10157c:	66 90                	xchg   ax,ax
+  10157e:	66 90                	xchg   ax,ax
+  101580:	66 90                	xchg   ax,ax
+  101582:	66 90                	xchg   ax,ax
+  101584:	66 90                	xchg   ax,ax
+  101586:	66 90                	xchg   ax,ax
+  101588:	66 90                	xchg   ax,ax
+  10158a:	66 90                	xchg   ax,ax
+  10158c:	66 90                	xchg   ax,ax
+  10158e:	66 90                	xchg   ax,ax
+  101590:	66 90                	xchg   ax,ax
+  101592:	66 90                	xchg   ax,ax
+  101594:	66 90                	xchg   ax,ax
+  101596:	66 90                	xchg   ax,ax
+  101598:	66 90                	xchg   ax,ax
+  10159a:	66 90                	xchg   ax,ax
+  10159c:	66 90                	xchg   ax,ax
+  10159e:	66 90                	xchg   ax,ax
+  1015a0:	66 90                	xchg   ax,ax
+  1015a2:	66 90                	xchg   ax,ax
+  1015a4:	66 90                	xchg   ax,ax
+  1015a6:	66 90                	xchg   ax,ax
+  1015a8:	66 90                	xchg   ax,ax
+  1015aa:	66 90                	xchg   ax,ax
+  1015ac:	66 90                	xchg   ax,ax
+  1015ae:	66 90                	xchg   ax,ax
+  1015b0:	66 90                	xchg   ax,ax
+  1015b2:	66 90                	xchg   ax,ax
+  1015b4:	66 90                	xchg   ax,ax
+  1015b6:	66 90                	xchg   ax,ax
+  1015b8:	66 90                	xchg   ax,ax
+  1015ba:	66 90                	xchg   ax,ax
+  1015bc:	66 90                	xchg   ax,ax
+  1015be:	66 90                	xchg   ax,ax
+  1015c0:	66 90                	xchg   ax,ax
+  1015c2:	66 90                	xchg   ax,ax
+  1015c4:	66 90                	xchg   ax,ax
+  1015c6:	66 90                	xchg   ax,ax
+  1015c8:	66 90                	xchg   ax,ax
+  1015ca:	66 90                	xchg   ax,ax
+  1015cc:	66 90                	xchg   ax,ax
+  1015ce:	66 90                	xchg   ax,ax
+  1015d0:	66 90                	xchg   ax,ax
+  1015d2:	66 90                	xchg   ax,ax
+  1015d4:	66 90                	xchg   ax,ax
+  1015d6:	66 90                	xchg   ax,ax
+  1015d8:	66 90                	xchg   ax,ax
+  1015da:	66 90                	xchg   ax,ax
+  1015dc:	66 90                	xchg   ax,ax
+  1015de:	66 90                	xchg   ax,ax
+  1015e0:	66 90                	xchg   ax,ax
+  1015e2:	66 90                	xchg   ax,ax
+  1015e4:	66 90                	xchg   ax,ax
+  1015e6:	66 90                	xchg   ax,ax
+  1015e8:	66 90                	xchg   ax,ax
+  1015ea:	66 90                	xchg   ax,ax
+  1015ec:	66 90                	xchg   ax,ax
+  1015ee:	66 90                	xchg   ax,ax
+  1015f0:	66 90                	xchg   ax,ax
+  1015f2:	66 90                	xchg   ax,ax
+  1015f4:	66 90                	xchg   ax,ax
+  1015f6:	66 90                	xchg   ax,ax
+  1015f8:	66 90                	xchg   ax,ax
+  1015fa:	66 90                	xchg   ax,ax
+  1015fc:	66 90                	xchg   ax,ax
+  1015fe:	66 90                	xchg   ax,ax
+  101600:	66 90                	xchg   ax,ax
+  101602:	66 90                	xchg   ax,ax
+  101604:	66 90                	xchg   ax,ax
+  101606:	66 90                	xchg   ax,ax
+  101608:	66 90                	xchg   ax,ax
+  10160a:	66 90                	xchg   ax,ax
+  10160c:	66 90                	xchg   ax,ax
+  10160e:	66 90                	xchg   ax,ax
+  101610:	66 90                	xchg   ax,ax
+  101612:	66 90                	xchg   ax,ax
+  101614:	66 90                	xchg   ax,ax
+  101616:	66 90                	xchg   ax,ax
+  101618:	66 90                	xchg   ax,ax
+  10161a:	66 90                	xchg   ax,ax
+  10161c:	66 90                	xchg   ax,ax
+  10161e:	66 90                	xchg   ax,ax
+  101620:	66 90                	xchg   ax,ax
+  101622:	66 90                	xchg   ax,ax
+  101624:	66 90                	xchg   ax,ax
+  101626:	66 90                	xchg   ax,ax
+  101628:	66 90                	xchg   ax,ax
+  10162a:	66 90                	xchg   ax,ax
+  10162c:	66 90                	xchg   ax,ax
+  10162e:	66 90                	xchg   ax,ax
+  101630:	66 90                	xchg   ax,ax
+  101632:	66 90                	xchg   ax,ax
+  101634:	66 90                	xchg   ax,ax
+  101636:	66 90                	xchg   ax,ax
+  101638:	66 90                	xchg   ax,ax
+  10163a:	66 90                	xchg   ax,ax
+  10163c:	66 90                	xchg   ax,ax
+  10163e:	66 90                	xchg   ax,ax
+  101640:	66 90                	xchg   ax,ax
+  101642:	66 90                	xchg   ax,ax
+  101644:	66 90                	xchg   ax,ax
+  101646:	66 90                	xchg   ax,ax
+  101648:	66 90                	xchg   ax,ax
+  10164a:	66 90                	xchg   ax,ax
+  10164c:	66 90                	xchg   ax,ax
+  10164e:	66 90                	xchg   ax,ax
+  101650:	66 90                	xchg   ax,ax
+  101652:	66 90                	xchg   ax,ax
+  101654:	66 90                	xchg   ax,ax
+  101656:	66 90                	xchg   ax,ax
+  101658:	66 90                	xchg   ax,ax
+  10165a:	66 90                	xchg   ax,ax
+  10165c:	66 90                	xchg   ax,ax
+  10165e:	66 90                	xchg   ax,ax
+  101660:	66 90                	xchg   ax,ax
+  101662:	66 90                	xchg   ax,ax
+  101664:	66 90                	xchg   ax,ax
+  101666:	66 90                	xchg   ax,ax
+  101668:	66 90                	xchg   ax,ax
+  10166a:	66 90                	xchg   ax,ax
+  10166c:	66 90                	xchg   ax,ax
+  10166e:	66 90                	xchg   ax,ax
+  101670:	66 90                	xchg   ax,ax
+  101672:	66 90                	xchg   ax,ax
+  101674:	66 90                	xchg   ax,ax
+  101676:	66 90                	xchg   ax,ax
+  101678:	66 90                	xchg   ax,ax
+  10167a:	66 90                	xchg   ax,ax
+  10167c:	66 90                	xchg   ax,ax
+  10167e:	66 90                	xchg   ax,ax
+  101680:	66 90                	xchg   ax,ax
+  101682:	66 90                	xchg   ax,ax
+  101684:	66 90                	xchg   ax,ax
+  101686:	66 90                	xchg   ax,ax
+  101688:	66 90                	xchg   ax,ax
+  10168a:	66 90                	xchg   ax,ax
+  10168c:	66 90                	xchg   ax,ax
+  10168e:	66 90                	xchg   ax,ax
+  101690:	66 90                	xchg   ax,ax
+  101692:	66 90                	xchg   ax,ax
+  101694:	66 90                	xchg   ax,ax
+  101696:	66 90                	xchg   ax,ax
+  101698:	66 90                	xchg   ax,ax
+  10169a:	66 90                	xchg   ax,ax
+  10169c:	66 90                	xchg   ax,ax
+  10169e:	66 90                	xchg   ax,ax
+  1016a0:	66 90                	xchg   ax,ax
+  1016a2:	66 90                	xchg   ax,ax
+  1016a4:	66 90                	xchg   ax,ax
+  1016a6:	66 90                	xchg   ax,ax
+  1016a8:	66 90                	xchg   ax,ax
+  1016aa:	66 90                	xchg   ax,ax
+  1016ac:	66 90                	xchg   ax,ax
+  1016ae:	66 90                	xchg   ax,ax
+  1016b0:	66 90                	xchg   ax,ax
+  1016b2:	66 90                	xchg   ax,ax
+  1016b4:	66 90                	xchg   ax,ax
+  1016b6:	66 90                	xchg   ax,ax
+  1016b8:	66 90                	xchg   ax,ax
+  1016ba:	66 90                	xchg   ax,ax
+  1016bc:	66 90                	xchg   ax,ax
+  1016be:	66 90                	xchg   ax,ax
+  1016c0:	66 90                	xchg   ax,ax
+  1016c2:	66 90                	xchg   ax,ax
+  1016c4:	66 90                	xchg   ax,ax
+  1016c6:	66 90                	xchg   ax,ax
+  1016c8:	66 90                	xchg   ax,ax
+  1016ca:	66 90                	xchg   ax,ax
+  1016cc:	66 90                	xchg   ax,ax
+  1016ce:	66 90                	xchg   ax,ax
+  1016d0:	66 90                	xchg   ax,ax
+  1016d2:	66 90                	xchg   ax,ax
+  1016d4:	66 90                	xchg   ax,ax
+  1016d6:	66 90                	xchg   ax,ax
+  1016d8:	66 90                	xchg   ax,ax
+  1016da:	66 90                	xchg   ax,ax
+  1016dc:	66 90                	xchg   ax,ax
+  1016de:	66 90                	xchg   ax,ax
+  1016e0:	66 90                	xchg   ax,ax
+  1016e2:	66 90                	xchg   ax,ax
+  1016e4:	66 90                	xchg   ax,ax
+  1016e6:	66 90                	xchg   ax,ax
+  1016e8:	66 90                	xchg   ax,ax
+  1016ea:	66 90                	xchg   ax,ax
+  1016ec:	66 90                	xchg   ax,ax
+  1016ee:	66 90                	xchg   ax,ax
+  1016f0:	66 90                	xchg   ax,ax
+  1016f2:	66 90                	xchg   ax,ax
+  1016f4:	66 90                	xchg   ax,ax
+  1016f6:	66 90                	xchg   ax,ax
+  1016f8:	66 90                	xchg   ax,ax
+  1016fa:	66 90                	xchg   ax,ax
+  1016fc:	66 90                	xchg   ax,ax
+  1016fe:	66 90                	xchg   ax,ax
+  101700:	66 90                	xchg   ax,ax
+  101702:	66 90                	xchg   ax,ax
+  101704:	66 90                	xchg   ax,ax
+  101706:	66 90                	xchg   ax,ax
+  101708:	66 90                	xchg   ax,ax
+  10170a:	66 90                	xchg   ax,ax
+  10170c:	66 90                	xchg   ax,ax
+  10170e:	66 90                	xchg   ax,ax
+  101710:	66 90                	xchg   ax,ax
+  101712:	66 90                	xchg   ax,ax
+  101714:	66 90                	xchg   ax,ax
+  101716:	66 90                	xchg   ax,ax
+  101718:	66 90                	xchg   ax,ax
+  10171a:	66 90                	xchg   ax,ax
+  10171c:	66 90                	xchg   ax,ax
+  10171e:	66 90                	xchg   ax,ax
+  101720:	66 90                	xchg   ax,ax
+  101722:	66 90                	xchg   ax,ax
+  101724:	66 90                	xchg   ax,ax
+  101726:	66 90                	xchg   ax,ax
+  101728:	66 90                	xchg   ax,ax
+  10172a:	66 90                	xchg   ax,ax
+  10172c:	66 90                	xchg   ax,ax
+  10172e:	66 90                	xchg   ax,ax
+  101730:	66 90                	xchg   ax,ax
+  101732:	66 90                	xchg   ax,ax
+  101734:	66 90                	xchg   ax,ax
+  101736:	66 90                	xchg   ax,ax
+  101738:	66 90                	xchg   ax,ax
+  10173a:	66 90                	xchg   ax,ax
+  10173c:	66 90                	xchg   ax,ax
+  10173e:	66 90                	xchg   ax,ax
+  101740:	66 90                	xchg   ax,ax
+  101742:	66 90                	xchg   ax,ax
+  101744:	66 90                	xchg   ax,ax
+  101746:	66 90                	xchg   ax,ax
+  101748:	66 90                	xchg   ax,ax
+  10174a:	66 90                	xchg   ax,ax
+  10174c:	66 90                	xchg   ax,ax
+  10174e:	66 90                	xchg   ax,ax
+  101750:	66 90                	xchg   ax,ax
+  101752:	66 90                	xchg   ax,ax
+  101754:	66 90                	xchg   ax,ax
+  101756:	66 90                	xchg   ax,ax
+  101758:	66 90                	xchg   ax,ax
+  10175a:	66 90                	xchg   ax,ax
+  10175c:	66 90                	xchg   ax,ax
+  10175e:	66 90                	xchg   ax,ax
+  101760:	66 90                	xchg   ax,ax
+  101762:	66 90                	xchg   ax,ax
+  101764:	66 90                	xchg   ax,ax
+  101766:	66 90                	xchg   ax,ax
+  101768:	66 90                	xchg   ax,ax
+  10176a:	66 90                	xchg   ax,ax
+  10176c:	66 90                	xchg   ax,ax
+  10176e:	66 90                	xchg   ax,ax
+  101770:	66 90                	xchg   ax,ax
+  101772:	66 90                	xchg   ax,ax
+  101774:	66 90                	xchg   ax,ax
+  101776:	66 90                	xchg   ax,ax
+  101778:	66 90                	xchg   ax,ax
+  10177a:	66 90                	xchg   ax,ax
+  10177c:	66 90                	xchg   ax,ax
+  10177e:	66 90                	xchg   ax,ax
+  101780:	66 90                	xchg   ax,ax
+  101782:	66 90                	xchg   ax,ax
+  101784:	66 90                	xchg   ax,ax
+  101786:	66 90                	xchg   ax,ax
+  101788:	66 90                	xchg   ax,ax
+  10178a:	66 90                	xchg   ax,ax
+  10178c:	66 90                	xchg   ax,ax
+  10178e:	66 90                	xchg   ax,ax
+  101790:	66 90                	xchg   ax,ax
+  101792:	66 90                	xchg   ax,ax
+  101794:	66 90                	xchg   ax,ax
+  101796:	66 90                	xchg   ax,ax
+  101798:	66 90                	xchg   ax,ax
+  10179a:	66 90                	xchg   ax,ax
+  10179c:	66 90                	xchg   ax,ax
+  10179e:	66 90                	xchg   ax,ax
+  1017a0:	66 90                	xchg   ax,ax
+  1017a2:	66 90                	xchg   ax,ax
+  1017a4:	66 90                	xchg   ax,ax
+  1017a6:	66 90                	xchg   ax,ax
+  1017a8:	66 90                	xchg   ax,ax
+  1017aa:	66 90                	xchg   ax,ax
+  1017ac:	66 90                	xchg   ax,ax
+  1017ae:	66 90                	xchg   ax,ax
+  1017b0:	66 90                	xchg   ax,ax
+  1017b2:	66 90                	xchg   ax,ax
+  1017b4:	66 90                	xchg   ax,ax
+  1017b6:	66 90                	xchg   ax,ax
+  1017b8:	66 90                	xchg   ax,ax
+  1017ba:	66 90                	xchg   ax,ax
+  1017bc:	66 90                	xchg   ax,ax
+  1017be:	66 90                	xchg   ax,ax
+  1017c0:	66 90                	xchg   ax,ax
+  1017c2:	66 90                	xchg   ax,ax
+  1017c4:	66 90                	xchg   ax,ax
+  1017c6:	66 90                	xchg   ax,ax
+  1017c8:	66 90                	xchg   ax,ax
+  1017ca:	66 90                	xchg   ax,ax
+  1017cc:	66 90                	xchg   ax,ax
+  1017ce:	66 90                	xchg   ax,ax
+  1017d0:	66 90                	xchg   ax,ax
+  1017d2:	66 90                	xchg   ax,ax
+  1017d4:	66 90                	xchg   ax,ax
+  1017d6:	66 90                	xchg   ax,ax
+  1017d8:	66 90                	xchg   ax,ax
+  1017da:	66 90                	xchg   ax,ax
+  1017dc:	66 90                	xchg   ax,ax
+  1017de:	66 90                	xchg   ax,ax
+  1017e0:	66 90                	xchg   ax,ax
+  1017e2:	66 90                	xchg   ax,ax
+  1017e4:	66 90                	xchg   ax,ax
+  1017e6:	66 90                	xchg   ax,ax
+  1017e8:	66 90                	xchg   ax,ax
+  1017ea:	66 90                	xchg   ax,ax
+  1017ec:	66 90                	xchg   ax,ax
+  1017ee:	66 90                	xchg   ax,ax
+  1017f0:	66 90                	xchg   ax,ax
+  1017f2:	66 90                	xchg   ax,ax
+  1017f4:	66 90                	xchg   ax,ax
+  1017f6:	66 90                	xchg   ax,ax
+  1017f8:	66 90                	xchg   ax,ax
+  1017fa:	66 90                	xchg   ax,ax
+  1017fc:	66 90                	xchg   ax,ax
+  1017fe:	66 90                	xchg   ax,ax
+  101800:	66 90                	xchg   ax,ax
+  101802:	66 90                	xchg   ax,ax
+  101804:	66 90                	xchg   ax,ax
+  101806:	66 90                	xchg   ax,ax
+  101808:	66 90                	xchg   ax,ax
+  10180a:	66 90                	xchg   ax,ax
+  10180c:	66 90                	xchg   ax,ax
+  10180e:	66 90                	xchg   ax,ax
+  101810:	66 90                	xchg   ax,ax
+  101812:	66 90                	xchg   ax,ax
+  101814:	66 90                	xchg   ax,ax
+  101816:	66 90                	xchg   ax,ax
+  101818:	66 90                	xchg   ax,ax
+  10181a:	66 90                	xchg   ax,ax
+  10181c:	66 90                	xchg   ax,ax
+  10181e:	66 90                	xchg   ax,ax
+  101820:	66 90                	xchg   ax,ax
+  101822:	66 90                	xchg   ax,ax
+  101824:	66 90                	xchg   ax,ax
+  101826:	66 90                	xchg   ax,ax
+  101828:	66 90                	xchg   ax,ax
+  10182a:	66 90                	xchg   ax,ax
+  10182c:	66 90                	xchg   ax,ax
+  10182e:	66 90                	xchg   ax,ax
+  101830:	66 90                	xchg   ax,ax
+  101832:	66 90                	xchg   ax,ax
+  101834:	66 90                	xchg   ax,ax
+  101836:	66 90                	xchg   ax,ax
+  101838:	66 90                	xchg   ax,ax
+  10183a:	66 90                	xchg   ax,ax
+  10183c:	66 90                	xchg   ax,ax
+  10183e:	66 90                	xchg   ax,ax
+  101840:	66 90                	xchg   ax,ax
+  101842:	66 90                	xchg   ax,ax
+  101844:	66 90                	xchg   ax,ax
+  101846:	66 90                	xchg   ax,ax
+  101848:	66 90                	xchg   ax,ax
+  10184a:	66 90                	xchg   ax,ax
+  10184c:	66 90                	xchg   ax,ax
+  10184e:	66 90                	xchg   ax,ax
+  101850:	66 90                	xchg   ax,ax
+  101852:	66 90                	xchg   ax,ax
+  101854:	66 90                	xchg   ax,ax
+  101856:	66 90                	xchg   ax,ax
+  101858:	66 90                	xchg   ax,ax
+  10185a:	66 90                	xchg   ax,ax
+  10185c:	66 90                	xchg   ax,ax
+  10185e:	66 90                	xchg   ax,ax
+  101860:	66 90                	xchg   ax,ax
+  101862:	66 90                	xchg   ax,ax
+  101864:	66 90                	xchg   ax,ax
+  101866:	66 90                	xchg   ax,ax
+  101868:	66 90                	xchg   ax,ax
+  10186a:	66 90                	xchg   ax,ax
+  10186c:	66 90                	xchg   ax,ax
+  10186e:	66 90                	xchg   ax,ax
+  101870:	66 90                	xchg   ax,ax
+  101872:	66 90                	xchg   ax,ax
+  101874:	66 90                	xchg   ax,ax
+  101876:	66 90                	xchg   ax,ax
+  101878:	66 90                	xchg   ax,ax
+  10187a:	66 90                	xchg   ax,ax
+  10187c:	66 90                	xchg   ax,ax
+  10187e:	66 90                	xchg   ax,ax
+  101880:	66 90                	xchg   ax,ax
+  101882:	66 90                	xchg   ax,ax
+  101884:	66 90                	xchg   ax,ax
+  101886:	66 90                	xchg   ax,ax
+  101888:	66 90                	xchg   ax,ax
+  10188a:	66 90                	xchg   ax,ax
+  10188c:	66 90                	xchg   ax,ax
+  10188e:	66 90                	xchg   ax,ax
+  101890:	66 90                	xchg   ax,ax
+  101892:	66 90                	xchg   ax,ax
+  101894:	66 90                	xchg   ax,ax
+  101896:	66 90                	xchg   ax,ax
+  101898:	66 90                	xchg   ax,ax
+  10189a:	66 90                	xchg   ax,ax
+  10189c:	66 90                	xchg   ax,ax
+  10189e:	66 90                	xchg   ax,ax
+  1018a0:	66 90                	xchg   ax,ax
+  1018a2:	66 90                	xchg   ax,ax
+  1018a4:	66 90                	xchg   ax,ax
+  1018a6:	66 90                	xchg   ax,ax
+  1018a8:	66 90                	xchg   ax,ax
+  1018aa:	66 90                	xchg   ax,ax
+  1018ac:	66 90                	xchg   ax,ax
+  1018ae:	66 90                	xchg   ax,ax
+  1018b0:	66 90                	xchg   ax,ax
+  1018b2:	66 90                	xchg   ax,ax
+  1018b4:	66 90                	xchg   ax,ax
+  1018b6:	66 90                	xchg   ax,ax
+  1018b8:	66 90                	xchg   ax,ax
+  1018ba:	66 90                	xchg   ax,ax
+  1018bc:	66 90                	xchg   ax,ax
+  1018be:	66 90                	xchg   ax,ax
+  1018c0:	66 90                	xchg   ax,ax
+  1018c2:	66 90                	xchg   ax,ax
+  1018c4:	66 90                	xchg   ax,ax
+  1018c6:	66 90                	xchg   ax,ax
+  1018c8:	66 90                	xchg   ax,ax
+  1018ca:	66 90                	xchg   ax,ax
+  1018cc:	66 90                	xchg   ax,ax
+  1018ce:	66 90                	xchg   ax,ax
+  1018d0:	66 90                	xchg   ax,ax
+  1018d2:	66 90                	xchg   ax,ax
+  1018d4:	66 90                	xchg   ax,ax
+  1018d6:	66 90                	xchg   ax,ax
+  1018d8:	66 90                	xchg   ax,ax
+  1018da:	66 90                	xchg   ax,ax
+  1018dc:	66 90                	xchg   ax,ax
+  1018de:	66 90                	xchg   ax,ax
+  1018e0:	66 90                	xchg   ax,ax
+  1018e2:	66 90                	xchg   ax,ax
+  1018e4:	66 90                	xchg   ax,ax
+  1018e6:	66 90                	xchg   ax,ax
+  1018e8:	66 90                	xchg   ax,ax
+  1018ea:	66 90                	xchg   ax,ax
+  1018ec:	66 90                	xchg   ax,ax
+  1018ee:	66 90                	xchg   ax,ax
+  1018f0:	66 90                	xchg   ax,ax
+  1018f2:	66 90                	xchg   ax,ax
+  1018f4:	66 90                	xchg   ax,ax
+  1018f6:	66 90                	xchg   ax,ax
+  1018f8:	66 90                	xchg   ax,ax
+  1018fa:	66 90                	xchg   ax,ax
+  1018fc:	66 90                	xchg   ax,ax
+  1018fe:	66 90                	xchg   ax,ax
+  101900:	66 90                	xchg   ax,ax
+  101902:	66 90                	xchg   ax,ax
+  101904:	66 90                	xchg   ax,ax
+  101906:	66 90                	xchg   ax,ax
+  101908:	66 90                	xchg   ax,ax
+  10190a:	66 90                	xchg   ax,ax
+  10190c:	66 90                	xchg   ax,ax
+  10190e:	66 90                	xchg   ax,ax
+  101910:	66 90                	xchg   ax,ax
+  101912:	66 90                	xchg   ax,ax
+  101914:	66 90                	xchg   ax,ax
+  101916:	66 90                	xchg   ax,ax
+  101918:	66 90                	xchg   ax,ax
+  10191a:	66 90                	xchg   ax,ax
+  10191c:	66 90                	xchg   ax,ax
+  10191e:	66 90                	xchg   ax,ax
+  101920:	66 90                	xchg   ax,ax
+  101922:	66 90                	xchg   ax,ax
+  101924:	66 90                	xchg   ax,ax
+  101926:	66 90                	xchg   ax,ax
+  101928:	66 90                	xchg   ax,ax
+  10192a:	66 90                	xchg   ax,ax
+  10192c:	66 90                	xchg   ax,ax
+  10192e:	66 90                	xchg   ax,ax
+  101930:	66 90                	xchg   ax,ax
+  101932:	66 90                	xchg   ax,ax
+  101934:	66 90                	xchg   ax,ax
+  101936:	66 90                	xchg   ax,ax
+  101938:	66 90                	xchg   ax,ax
+  10193a:	66 90                	xchg   ax,ax
+  10193c:	66 90                	xchg   ax,ax
+  10193e:	66 90                	xchg   ax,ax
+  101940:	66 90                	xchg   ax,ax
+  101942:	66 90                	xchg   ax,ax
+  101944:	66 90                	xchg   ax,ax
+  101946:	66 90                	xchg   ax,ax
+  101948:	66 90                	xchg   ax,ax
+  10194a:	66 90                	xchg   ax,ax
+  10194c:	66 90                	xchg   ax,ax
+  10194e:	66 90                	xchg   ax,ax
+  101950:	66 90                	xchg   ax,ax
+  101952:	66 90                	xchg   ax,ax
+  101954:	66 90                	xchg   ax,ax
+  101956:	66 90                	xchg   ax,ax
+  101958:	66 90                	xchg   ax,ax
+  10195a:	66 90                	xchg   ax,ax
+  10195c:	66 90                	xchg   ax,ax
+  10195e:	66 90                	xchg   ax,ax
+  101960:	66 90                	xchg   ax,ax
+  101962:	66 90                	xchg   ax,ax
+  101964:	66 90                	xchg   ax,ax
+  101966:	66 90                	xchg   ax,ax
+  101968:	66 90                	xchg   ax,ax
+  10196a:	66 90                	xchg   ax,ax
+  10196c:	66 90                	xchg   ax,ax
+  10196e:	66 90                	xchg   ax,ax
+  101970:	66 90                	xchg   ax,ax
+  101972:	66 90                	xchg   ax,ax
+  101974:	66 90                	xchg   ax,ax
+  101976:	66 90                	xchg   ax,ax
+  101978:	66 90                	xchg   ax,ax
+  10197a:	66 90                	xchg   ax,ax
+  10197c:	66 90                	xchg   ax,ax
+  10197e:	66 90                	xchg   ax,ax
+  101980:	66 90                	xchg   ax,ax
+  101982:	66 90                	xchg   ax,ax
+  101984:	66 90                	xchg   ax,ax
+  101986:	66 90                	xchg   ax,ax
+  101988:	66 90                	xchg   ax,ax
+  10198a:	66 90                	xchg   ax,ax
+  10198c:	66 90                	xchg   ax,ax
+  10198e:	66 90                	xchg   ax,ax
+  101990:	66 90                	xchg   ax,ax
+  101992:	66 90                	xchg   ax,ax
+  101994:	66 90                	xchg   ax,ax
+  101996:	66 90                	xchg   ax,ax
+  101998:	66 90                	xchg   ax,ax
+  10199a:	66 90                	xchg   ax,ax
+  10199c:	66 90                	xchg   ax,ax
+  10199e:	66 90                	xchg   ax,ax
+  1019a0:	66 90                	xchg   ax,ax
+  1019a2:	66 90                	xchg   ax,ax
+  1019a4:	66 90                	xchg   ax,ax
+  1019a6:	66 90                	xchg   ax,ax
+  1019a8:	66 90                	xchg   ax,ax
+  1019aa:	66 90                	xchg   ax,ax
+  1019ac:	66 90                	xchg   ax,ax
+  1019ae:	66 90                	xchg   ax,ax
+  1019b0:	66 90                	xchg   ax,ax
+  1019b2:	66 90                	xchg   ax,ax
+  1019b4:	66 90                	xchg   ax,ax
+  1019b6:	66 90                	xchg   ax,ax
+  1019b8:	66 90                	xchg   ax,ax
+  1019ba:	66 90                	xchg   ax,ax
+  1019bc:	66 90                	xchg   ax,ax
+  1019be:	66 90                	xchg   ax,ax
+  1019c0:	66 90                	xchg   ax,ax
+  1019c2:	66 90                	xchg   ax,ax
+  1019c4:	66 90                	xchg   ax,ax
+  1019c6:	66 90                	xchg   ax,ax
+  1019c8:	66 90                	xchg   ax,ax
+  1019ca:	66 90                	xchg   ax,ax
+  1019cc:	66 90                	xchg   ax,ax
+  1019ce:	66 90                	xchg   ax,ax
+  1019d0:	66 90                	xchg   ax,ax
+  1019d2:	66 90                	xchg   ax,ax
+  1019d4:	66 90                	xchg   ax,ax
+  1019d6:	66 90                	xchg   ax,ax
+  1019d8:	66 90                	xchg   ax,ax
+  1019da:	66 90                	xchg   ax,ax
+  1019dc:	66 90                	xchg   ax,ax
+  1019de:	66 90                	xchg   ax,ax
+  1019e0:	66 90                	xchg   ax,ax
+  1019e2:	66 90                	xchg   ax,ax
+  1019e4:	66 90                	xchg   ax,ax
+  1019e6:	66 90                	xchg   ax,ax
+  1019e8:	66 90                	xchg   ax,ax
+  1019ea:	66 90                	xchg   ax,ax
+  1019ec:	66 90                	xchg   ax,ax
+  1019ee:	66 90                	xchg   ax,ax
+  1019f0:	66 90                	xchg   ax,ax
+  1019f2:	66 90                	xchg   ax,ax
+  1019f4:	66 90                	xchg   ax,ax
+  1019f6:	66 90                	xchg   ax,ax
+  1019f8:	66 90                	xchg   ax,ax
+  1019fa:	66 90                	xchg   ax,ax
+  1019fc:	66 90                	xchg   ax,ax
+  1019fe:	66 90                	xchg   ax,ax
+  101a00:	66 90                	xchg   ax,ax
+  101a02:	66 90                	xchg   ax,ax
+  101a04:	66 90                	xchg   ax,ax
+  101a06:	66 90                	xchg   ax,ax
+  101a08:	66 90                	xchg   ax,ax
+  101a0a:	66 90                	xchg   ax,ax
+  101a0c:	66 90                	xchg   ax,ax
+  101a0e:	66 90                	xchg   ax,ax
+  101a10:	66 90                	xchg   ax,ax
+  101a12:	66 90                	xchg   ax,ax
+  101a14:	66 90                	xchg   ax,ax
+  101a16:	66 90                	xchg   ax,ax
+  101a18:	66 90                	xchg   ax,ax
+  101a1a:	66 90                	xchg   ax,ax
+  101a1c:	66 90                	xchg   ax,ax
+  101a1e:	66 90                	xchg   ax,ax
+  101a20:	66 90                	xchg   ax,ax
+  101a22:	66 90                	xchg   ax,ax
+  101a24:	66 90                	xchg   ax,ax
+  101a26:	66 90                	xchg   ax,ax
+  101a28:	66 90                	xchg   ax,ax
+  101a2a:	66 90                	xchg   ax,ax
+  101a2c:	66 90                	xchg   ax,ax
+  101a2e:	66 90                	xchg   ax,ax
+  101a30:	66 90                	xchg   ax,ax
+  101a32:	66 90                	xchg   ax,ax
+  101a34:	66 90                	xchg   ax,ax
+  101a36:	66 90                	xchg   ax,ax
+  101a38:	66 90                	xchg   ax,ax
+  101a3a:	66 90                	xchg   ax,ax
+  101a3c:	66 90                	xchg   ax,ax
+  101a3e:	66 90                	xchg   ax,ax
+  101a40:	66 90                	xchg   ax,ax
+  101a42:	66 90                	xchg   ax,ax
+  101a44:	66 90                	xchg   ax,ax
+  101a46:	66 90                	xchg   ax,ax
+  101a48:	66 90                	xchg   ax,ax
+  101a4a:	66 90                	xchg   ax,ax
+  101a4c:	66 90                	xchg   ax,ax
+  101a4e:	66 90                	xchg   ax,ax
+  101a50:	66 90                	xchg   ax,ax
+  101a52:	66 90                	xchg   ax,ax
+  101a54:	66 90                	xchg   ax,ax
+  101a56:	66 90                	xchg   ax,ax
+  101a58:	66 90                	xchg   ax,ax
+  101a5a:	66 90                	xchg   ax,ax
+  101a5c:	66 90                	xchg   ax,ax
+  101a5e:	66 90                	xchg   ax,ax
+  101a60:	66 90                	xchg   ax,ax
+  101a62:	66 90                	xchg   ax,ax
+  101a64:	66 90                	xchg   ax,ax
+  101a66:	66 90                	xchg   ax,ax
+  101a68:	66 90                	xchg   ax,ax
+  101a6a:	66 90                	xchg   ax,ax
+  101a6c:	66 90                	xchg   ax,ax
+  101a6e:	66 90                	xchg   ax,ax
+  101a70:	66 90                	xchg   ax,ax
+  101a72:	66 90                	xchg   ax,ax
+  101a74:	66 90                	xchg   ax,ax
+  101a76:	66 90                	xchg   ax,ax
+  101a78:	66 90                	xchg   ax,ax
+  101a7a:	66 90                	xchg   ax,ax
+  101a7c:	66 90                	xchg   ax,ax
+  101a7e:	66 90                	xchg   ax,ax
+  101a80:	66 90                	xchg   ax,ax
+  101a82:	66 90                	xchg   ax,ax
+  101a84:	66 90                	xchg   ax,ax
+  101a86:	66 90                	xchg   ax,ax
+  101a88:	66 90                	xchg   ax,ax
+  101a8a:	66 90                	xchg   ax,ax
+  101a8c:	66 90                	xchg   ax,ax
+  101a8e:	66 90                	xchg   ax,ax
+  101a90:	66 90                	xchg   ax,ax
+  101a92:	66 90                	xchg   ax,ax
+  101a94:	66 90                	xchg   ax,ax
+  101a96:	66 90                	xchg   ax,ax
+  101a98:	66 90                	xchg   ax,ax
+  101a9a:	66 90                	xchg   ax,ax
+  101a9c:	66 90                	xchg   ax,ax
+  101a9e:	66 90                	xchg   ax,ax
+  101aa0:	66 90                	xchg   ax,ax
+  101aa2:	66 90                	xchg   ax,ax
+  101aa4:	66 90                	xchg   ax,ax
+  101aa6:	66 90                	xchg   ax,ax
+  101aa8:	66 90                	xchg   ax,ax
+  101aaa:	66 90                	xchg   ax,ax
+  101aac:	66 90                	xchg   ax,ax
+  101aae:	66 90                	xchg   ax,ax
+  101ab0:	66 90                	xchg   ax,ax
+  101ab2:	66 90                	xchg   ax,ax
+  101ab4:	66 90                	xchg   ax,ax
+  101ab6:	66 90                	xchg   ax,ax
+  101ab8:	66 90                	xchg   ax,ax
+  101aba:	66 90                	xchg   ax,ax
+  101abc:	66 90                	xchg   ax,ax
+  101abe:	66 90                	xchg   ax,ax
+  101ac0:	66 90                	xchg   ax,ax
+  101ac2:	66 90                	xchg   ax,ax
+  101ac4:	66 90                	xchg   ax,ax
+  101ac6:	66 90                	xchg   ax,ax
+  101ac8:	66 90                	xchg   ax,ax
+  101aca:	66 90                	xchg   ax,ax
+  101acc:	66 90                	xchg   ax,ax
+  101ace:	66 90                	xchg   ax,ax
+  101ad0:	66 90                	xchg   ax,ax
+  101ad2:	66 90                	xchg   ax,ax
+  101ad4:	66 90                	xchg   ax,ax
+  101ad6:	66 90                	xchg   ax,ax
+  101ad8:	66 90                	xchg   ax,ax
+  101ada:	66 90                	xchg   ax,ax
+  101adc:	66 90                	xchg   ax,ax
+  101ade:	66 90                	xchg   ax,ax
+  101ae0:	66 90                	xchg   ax,ax
+  101ae2:	66 90                	xchg   ax,ax
+  101ae4:	66 90                	xchg   ax,ax
+  101ae6:	66 90                	xchg   ax,ax
+  101ae8:	66 90                	xchg   ax,ax
+  101aea:	66 90                	xchg   ax,ax
+  101aec:	66 90                	xchg   ax,ax
+  101aee:	66 90                	xchg   ax,ax
+  101af0:	66 90                	xchg   ax,ax
+  101af2:	66 90                	xchg   ax,ax
+  101af4:	66 90                	xchg   ax,ax
+  101af6:	66 90                	xchg   ax,ax
+  101af8:	66 90                	xchg   ax,ax
+  101afa:	66 90                	xchg   ax,ax
+  101afc:	66 90                	xchg   ax,ax
+  101afe:	66 90                	xchg   ax,ax
+  101b00:	66 90                	xchg   ax,ax
+  101b02:	66 90                	xchg   ax,ax
+  101b04:	66 90                	xchg   ax,ax
+  101b06:	66 90                	xchg   ax,ax
+  101b08:	66 90                	xchg   ax,ax
+  101b0a:	66 90                	xchg   ax,ax
+  101b0c:	66 90                	xchg   ax,ax
+  101b0e:	66 90                	xchg   ax,ax
+  101b10:	66 90                	xchg   ax,ax
+  101b12:	66 90                	xchg   ax,ax
+  101b14:	66 90                	xchg   ax,ax
+  101b16:	66 90                	xchg   ax,ax
+  101b18:	66 90                	xchg   ax,ax
+  101b1a:	66 90                	xchg   ax,ax
+  101b1c:	66 90                	xchg   ax,ax
+  101b1e:	66 90                	xchg   ax,ax
+  101b20:	66 90                	xchg   ax,ax
+  101b22:	66 90                	xchg   ax,ax
+  101b24:	66 90                	xchg   ax,ax
+  101b26:	66 90                	xchg   ax,ax
+  101b28:	66 90                	xchg   ax,ax
+  101b2a:	66 90                	xchg   ax,ax
+  101b2c:	66 90                	xchg   ax,ax
+  101b2e:	66 90                	xchg   ax,ax
+  101b30:	66 90                	xchg   ax,ax
+  101b32:	66 90                	xchg   ax,ax
+  101b34:	66 90                	xchg   ax,ax
+  101b36:	66 90                	xchg   ax,ax
+  101b38:	66 90                	xchg   ax,ax
+  101b3a:	66 90                	xchg   ax,ax
+  101b3c:	66 90                	xchg   ax,ax
+  101b3e:	66 90                	xchg   ax,ax
+  101b40:	66 90                	xchg   ax,ax
+  101b42:	66 90                	xchg   ax,ax
+  101b44:	66 90                	xchg   ax,ax
+  101b46:	66 90                	xchg   ax,ax
+  101b48:	66 90                	xchg   ax,ax
+  101b4a:	66 90                	xchg   ax,ax
+  101b4c:	66 90                	xchg   ax,ax
+  101b4e:	66 90                	xchg   ax,ax
+  101b50:	66 90                	xchg   ax,ax
+  101b52:	66 90                	xchg   ax,ax
+  101b54:	66 90                	xchg   ax,ax
+  101b56:	66 90                	xchg   ax,ax
+  101b58:	66 90                	xchg   ax,ax
+  101b5a:	66 90                	xchg   ax,ax
+  101b5c:	66 90                	xchg   ax,ax
+  101b5e:	66 90                	xchg   ax,ax
+  101b60:	66 90                	xchg   ax,ax
+  101b62:	66 90                	xchg   ax,ax
+  101b64:	66 90                	xchg   ax,ax
+  101b66:	66 90                	xchg   ax,ax
+  101b68:	66 90                	xchg   ax,ax
+  101b6a:	66 90                	xchg   ax,ax
+  101b6c:	66 90                	xchg   ax,ax
+  101b6e:	66 90                	xchg   ax,ax
+  101b70:	66 90                	xchg   ax,ax
+  101b72:	66 90                	xchg   ax,ax
+  101b74:	66 90                	xchg   ax,ax
+  101b76:	66 90                	xchg   ax,ax
+  101b78:	66 90                	xchg   ax,ax
+  101b7a:	66 90                	xchg   ax,ax
+  101b7c:	66 90                	xchg   ax,ax
+  101b7e:	66 90                	xchg   ax,ax
+  101b80:	66 90                	xchg   ax,ax
+  101b82:	66 90                	xchg   ax,ax
+  101b84:	66 90                	xchg   ax,ax
+  101b86:	66 90                	xchg   ax,ax
+  101b88:	66 90                	xchg   ax,ax
+  101b8a:	66 90                	xchg   ax,ax
+  101b8c:	66 90                	xchg   ax,ax
+  101b8e:	66 90                	xchg   ax,ax
+  101b90:	66 90                	xchg   ax,ax
+  101b92:	66 90                	xchg   ax,ax
+  101b94:	66 90                	xchg   ax,ax
+  101b96:	66 90                	xchg   ax,ax
+  101b98:	66 90                	xchg   ax,ax
+  101b9a:	66 90                	xchg   ax,ax
+  101b9c:	66 90                	xchg   ax,ax
+  101b9e:	66 90                	xchg   ax,ax
+  101ba0:	66 90                	xchg   ax,ax
+  101ba2:	66 90                	xchg   ax,ax
+  101ba4:	66 90                	xchg   ax,ax
+  101ba6:	66 90                	xchg   ax,ax
+  101ba8:	66 90                	xchg   ax,ax
+  101baa:	66 90                	xchg   ax,ax
+  101bac:	66 90                	xchg   ax,ax
+  101bae:	66 90                	xchg   ax,ax
+  101bb0:	66 90                	xchg   ax,ax
+  101bb2:	66 90                	xchg   ax,ax
+  101bb4:	66 90                	xchg   ax,ax
+  101bb6:	66 90                	xchg   ax,ax
+  101bb8:	66 90                	xchg   ax,ax
+  101bba:	66 90                	xchg   ax,ax
+  101bbc:	66 90                	xchg   ax,ax
+  101bbe:	66 90                	xchg   ax,ax
+  101bc0:	66 90                	xchg   ax,ax
+  101bc2:	66 90                	xchg   ax,ax
+  101bc4:	66 90                	xchg   ax,ax
+  101bc6:	66 90                	xchg   ax,ax
+  101bc8:	66 90                	xchg   ax,ax
+  101bca:	66 90                	xchg   ax,ax
+  101bcc:	66 90                	xchg   ax,ax
+  101bce:	66 90                	xchg   ax,ax
+  101bd0:	66 90                	xchg   ax,ax
+  101bd2:	66 90                	xchg   ax,ax
+  101bd4:	66 90                	xchg   ax,ax
+  101bd6:	66 90                	xchg   ax,ax
+  101bd8:	66 90                	xchg   ax,ax
+  101bda:	66 90                	xchg   ax,ax
+  101bdc:	66 90                	xchg   ax,ax
+  101bde:	66 90                	xchg   ax,ax
+  101be0:	66 90                	xchg   ax,ax
+  101be2:	66 90                	xchg   ax,ax
+  101be4:	66 90                	xchg   ax,ax
+  101be6:	66 90                	xchg   ax,ax
+  101be8:	66 90                	xchg   ax,ax
+  101bea:	66 90                	xchg   ax,ax
+  101bec:	66 90                	xchg   ax,ax
+  101bee:	66 90                	xchg   ax,ax
+  101bf0:	66 90                	xchg   ax,ax
+  101bf2:	66 90                	xchg   ax,ax
+  101bf4:	66 90                	xchg   ax,ax
+  101bf6:	66 90                	xchg   ax,ax
+  101bf8:	66 90                	xchg   ax,ax
+  101bfa:	66 90                	xchg   ax,ax
+  101bfc:	66 90                	xchg   ax,ax
+  101bfe:	66 90                	xchg   ax,ax
+  101c00:	66 90                	xchg   ax,ax
+  101c02:	66 90                	xchg   ax,ax
+  101c04:	66 90                	xchg   ax,ax
+  101c06:	66 90                	xchg   ax,ax
+  101c08:	66 90                	xchg   ax,ax
+  101c0a:	66 90                	xchg   ax,ax
+  101c0c:	66 90                	xchg   ax,ax
+  101c0e:	66 90                	xchg   ax,ax
+  101c10:	66 90                	xchg   ax,ax
+  101c12:	66 90                	xchg   ax,ax
+  101c14:	66 90                	xchg   ax,ax
+  101c16:	66 90                	xchg   ax,ax
+  101c18:	66 90                	xchg   ax,ax
+  101c1a:	66 90                	xchg   ax,ax
+  101c1c:	66 90                	xchg   ax,ax
+  101c1e:	66 90                	xchg   ax,ax
+  101c20:	66 90                	xchg   ax,ax
+  101c22:	66 90                	xchg   ax,ax
+  101c24:	66 90                	xchg   ax,ax
+  101c26:	66 90                	xchg   ax,ax
+  101c28:	66 90                	xchg   ax,ax
+  101c2a:	66 90                	xchg   ax,ax
+  101c2c:	66 90                	xchg   ax,ax
+  101c2e:	66 90                	xchg   ax,ax
+  101c30:	66 90                	xchg   ax,ax
+  101c32:	66 90                	xchg   ax,ax
+  101c34:	66 90                	xchg   ax,ax
+  101c36:	66 90                	xchg   ax,ax
+  101c38:	66 90                	xchg   ax,ax
+  101c3a:	66 90                	xchg   ax,ax
+  101c3c:	66 90                	xchg   ax,ax
+  101c3e:	66 90                	xchg   ax,ax
+  101c40:	66 90                	xchg   ax,ax
+  101c42:	66 90                	xchg   ax,ax
+  101c44:	66 90                	xchg   ax,ax
+  101c46:	66 90                	xchg   ax,ax
+  101c48:	66 90                	xchg   ax,ax
+  101c4a:	66 90                	xchg   ax,ax
+  101c4c:	66 90                	xchg   ax,ax
+  101c4e:	66 90                	xchg   ax,ax
+  101c50:	66 90                	xchg   ax,ax
+  101c52:	66 90                	xchg   ax,ax
+  101c54:	66 90                	xchg   ax,ax
+  101c56:	66 90                	xchg   ax,ax
+  101c58:	66 90                	xchg   ax,ax
+  101c5a:	66 90                	xchg   ax,ax
+  101c5c:	66 90                	xchg   ax,ax
+  101c5e:	66 90                	xchg   ax,ax
+  101c60:	66 90                	xchg   ax,ax
+  101c62:	66 90                	xchg   ax,ax
+  101c64:	66 90                	xchg   ax,ax
+  101c66:	66 90                	xchg   ax,ax
+  101c68:	66 90                	xchg   ax,ax
+  101c6a:	66 90                	xchg   ax,ax
+  101c6c:	66 90                	xchg   ax,ax
+  101c6e:	66 90                	xchg   ax,ax
+  101c70:	66 90                	xchg   ax,ax
+  101c72:	66 90                	xchg   ax,ax
+  101c74:	66 90                	xchg   ax,ax
+  101c76:	66 90                	xchg   ax,ax
+  101c78:	66 90                	xchg   ax,ax
+  101c7a:	66 90                	xchg   ax,ax
+  101c7c:	66 90                	xchg   ax,ax
+  101c7e:	66 90                	xchg   ax,ax
+  101c80:	66 90                	xchg   ax,ax
+  101c82:	66 90                	xchg   ax,ax
+  101c84:	66 90                	xchg   ax,ax
+  101c86:	66 90                	xchg   ax,ax
+  101c88:	66 90                	xchg   ax,ax
+  101c8a:	66 90                	xchg   ax,ax
+  101c8c:	66 90                	xchg   ax,ax
+  101c8e:	66 90                	xchg   ax,ax
+  101c90:	66 90                	xchg   ax,ax
+  101c92:	66 90                	xchg   ax,ax
+  101c94:	66 90                	xchg   ax,ax
+  101c96:	66 90                	xchg   ax,ax
+  101c98:	66 90                	xchg   ax,ax
+  101c9a:	66 90                	xchg   ax,ax
+  101c9c:	66 90                	xchg   ax,ax
+  101c9e:	66 90                	xchg   ax,ax
+  101ca0:	66 90                	xchg   ax,ax
+  101ca2:	66 90                	xchg   ax,ax
+  101ca4:	66 90                	xchg   ax,ax
+  101ca6:	66 90                	xchg   ax,ax
+  101ca8:	66 90                	xchg   ax,ax
+  101caa:	66 90                	xchg   ax,ax
+  101cac:	66 90                	xchg   ax,ax
+  101cae:	66 90                	xchg   ax,ax
+  101cb0:	66 90                	xchg   ax,ax
+  101cb2:	66 90                	xchg   ax,ax
+  101cb4:	66 90                	xchg   ax,ax
+  101cb6:	66 90                	xchg   ax,ax
+  101cb8:	66 90                	xchg   ax,ax
+  101cba:	66 90                	xchg   ax,ax
+  101cbc:	66 90                	xchg   ax,ax
+  101cbe:	66 90                	xchg   ax,ax
+  101cc0:	66 90                	xchg   ax,ax
+  101cc2:	66 90                	xchg   ax,ax
+  101cc4:	66 90                	xchg   ax,ax
+  101cc6:	66 90                	xchg   ax,ax
+  101cc8:	66 90                	xchg   ax,ax
+  101cca:	66 90                	xchg   ax,ax
+  101ccc:	66 90                	xchg   ax,ax
+  101cce:	66 90                	xchg   ax,ax
+  101cd0:	66 90                	xchg   ax,ax
+  101cd2:	66 90                	xchg   ax,ax
+  101cd4:	66 90                	xchg   ax,ax
+  101cd6:	66 90                	xchg   ax,ax
+  101cd8:	66 90                	xchg   ax,ax
+  101cda:	66 90                	xchg   ax,ax
+  101cdc:	66 90                	xchg   ax,ax
+  101cde:	66 90                	xchg   ax,ax
+  101ce0:	66 90                	xchg   ax,ax
+  101ce2:	66 90                	xchg   ax,ax
+  101ce4:	66 90                	xchg   ax,ax
+  101ce6:	66 90                	xchg   ax,ax
+  101ce8:	66 90                	xchg   ax,ax
+  101cea:	66 90                	xchg   ax,ax
+  101cec:	66 90                	xchg   ax,ax
+  101cee:	66 90                	xchg   ax,ax
+  101cf0:	66 90                	xchg   ax,ax
+  101cf2:	66 90                	xchg   ax,ax
+  101cf4:	66 90                	xchg   ax,ax
+  101cf6:	66 90                	xchg   ax,ax
+  101cf8:	66 90                	xchg   ax,ax
+  101cfa:	66 90                	xchg   ax,ax
+  101cfc:	66 90                	xchg   ax,ax
+  101cfe:	66 90                	xchg   ax,ax
+  101d00:	66 90                	xchg   ax,ax
+  101d02:	66 90                	xchg   ax,ax
+  101d04:	66 90                	xchg   ax,ax
+  101d06:	66 90                	xchg   ax,ax
+  101d08:	66 90                	xchg   ax,ax
+  101d0a:	66 90                	xchg   ax,ax
+  101d0c:	66 90                	xchg   ax,ax
+  101d0e:	66 90                	xchg   ax,ax
+  101d10:	66 90                	xchg   ax,ax
+  101d12:	66 90                	xchg   ax,ax
+  101d14:	66 90                	xchg   ax,ax
+  101d16:	66 90                	xchg   ax,ax
+  101d18:	66 90                	xchg   ax,ax
+  101d1a:	66 90                	xchg   ax,ax
+  101d1c:	66 90                	xchg   ax,ax
+  101d1e:	66 90                	xchg   ax,ax
+  101d20:	66 90                	xchg   ax,ax
+  101d22:	66 90                	xchg   ax,ax
+  101d24:	66 90                	xchg   ax,ax
+  101d26:	66 90                	xchg   ax,ax
+  101d28:	66 90                	xchg   ax,ax
+  101d2a:	66 90                	xchg   ax,ax
+  101d2c:	66 90                	xchg   ax,ax
+  101d2e:	66 90                	xchg   ax,ax
+  101d30:	66 90                	xchg   ax,ax
+  101d32:	66 90                	xchg   ax,ax
+  101d34:	66 90                	xchg   ax,ax
+  101d36:	66 90                	xchg   ax,ax
+  101d38:	66 90                	xchg   ax,ax
+  101d3a:	66 90                	xchg   ax,ax
+  101d3c:	66 90                	xchg   ax,ax
+  101d3e:	66 90                	xchg   ax,ax
+  101d40:	66 90                	xchg   ax,ax
+  101d42:	66 90                	xchg   ax,ax
+  101d44:	66 90                	xchg   ax,ax
+  101d46:	66 90                	xchg   ax,ax
+  101d48:	66 90                	xchg   ax,ax
+  101d4a:	66 90                	xchg   ax,ax
+  101d4c:	66 90                	xchg   ax,ax
+  101d4e:	66 90                	xchg   ax,ax
+  101d50:	66 90                	xchg   ax,ax
+  101d52:	66 90                	xchg   ax,ax
+  101d54:	66 90                	xchg   ax,ax
+  101d56:	66 90                	xchg   ax,ax
+  101d58:	66 90                	xchg   ax,ax
+  101d5a:	66 90                	xchg   ax,ax
+  101d5c:	66 90                	xchg   ax,ax
+  101d5e:	66 90                	xchg   ax,ax
+  101d60:	66 90                	xchg   ax,ax
+  101d62:	66 90                	xchg   ax,ax
+  101d64:	66 90                	xchg   ax,ax
+  101d66:	66 90                	xchg   ax,ax
+  101d68:	66 90                	xchg   ax,ax
+  101d6a:	66 90                	xchg   ax,ax
+  101d6c:	66 90                	xchg   ax,ax
+  101d6e:	66 90                	xchg   ax,ax
+  101d70:	66 90                	xchg   ax,ax
+  101d72:	66 90                	xchg   ax,ax
+  101d74:	66 90                	xchg   ax,ax
+  101d76:	66 90                	xchg   ax,ax
+  101d78:	66 90                	xchg   ax,ax
+  101d7a:	66 90                	xchg   ax,ax
+  101d7c:	66 90                	xchg   ax,ax
+  101d7e:	66 90                	xchg   ax,ax
+  101d80:	66 90                	xchg   ax,ax
+  101d82:	66 90                	xchg   ax,ax
+  101d84:	66 90                	xchg   ax,ax
+  101d86:	66 90                	xchg   ax,ax
+  101d88:	66 90                	xchg   ax,ax
+  101d8a:	66 90                	xchg   ax,ax
+  101d8c:	66 90                	xchg   ax,ax
+  101d8e:	66 90                	xchg   ax,ax
+  101d90:	66 90                	xchg   ax,ax
+  101d92:	66 90                	xchg   ax,ax
+  101d94:	66 90                	xchg   ax,ax
+  101d96:	66 90                	xchg   ax,ax
+  101d98:	66 90                	xchg   ax,ax
+  101d9a:	66 90                	xchg   ax,ax
+  101d9c:	66 90                	xchg   ax,ax
+  101d9e:	66 90                	xchg   ax,ax
+  101da0:	66 90                	xchg   ax,ax
+  101da2:	66 90                	xchg   ax,ax
+  101da4:	66 90                	xchg   ax,ax
+  101da6:	66 90                	xchg   ax,ax
+  101da8:	66 90                	xchg   ax,ax
+  101daa:	66 90                	xchg   ax,ax
+  101dac:	66 90                	xchg   ax,ax
+  101dae:	66 90                	xchg   ax,ax
+  101db0:	66 90                	xchg   ax,ax
+  101db2:	66 90                	xchg   ax,ax
+  101db4:	66 90                	xchg   ax,ax
+  101db6:	66 90                	xchg   ax,ax
+  101db8:	66 90                	xchg   ax,ax
+  101dba:	66 90                	xchg   ax,ax
+  101dbc:	66 90                	xchg   ax,ax
+  101dbe:	66 90                	xchg   ax,ax
+  101dc0:	66 90                	xchg   ax,ax
+  101dc2:	66 90                	xchg   ax,ax
+  101dc4:	66 90                	xchg   ax,ax
+  101dc6:	66 90                	xchg   ax,ax
+  101dc8:	66 90                	xchg   ax,ax
+  101dca:	66 90                	xchg   ax,ax
+  101dcc:	66 90                	xchg   ax,ax
+  101dce:	66 90                	xchg   ax,ax
+  101dd0:	66 90                	xchg   ax,ax
+  101dd2:	66 90                	xchg   ax,ax
+  101dd4:	66 90                	xchg   ax,ax
+  101dd6:	66 90                	xchg   ax,ax
+  101dd8:	66 90                	xchg   ax,ax
+  101dda:	66 90                	xchg   ax,ax
+  101ddc:	66 90                	xchg   ax,ax
+  101dde:	66 90                	xchg   ax,ax
+  101de0:	66 90                	xchg   ax,ax
+  101de2:	66 90                	xchg   ax,ax
+  101de4:	66 90                	xchg   ax,ax
+  101de6:	66 90                	xchg   ax,ax
+  101de8:	66 90                	xchg   ax,ax
+  101dea:	66 90                	xchg   ax,ax
+  101dec:	66 90                	xchg   ax,ax
+  101dee:	66 90                	xchg   ax,ax
+  101df0:	66 90                	xchg   ax,ax
+  101df2:	66 90                	xchg   ax,ax
+  101df4:	66 90                	xchg   ax,ax
+  101df6:	66 90                	xchg   ax,ax
+  101df8:	66 90                	xchg   ax,ax
+  101dfa:	66 90                	xchg   ax,ax
+  101dfc:	66 90                	xchg   ax,ax
+  101dfe:	66 90                	xchg   ax,ax
+  101e00:	66 90                	xchg   ax,ax
+  101e02:	66 90                	xchg   ax,ax
+  101e04:	66 90                	xchg   ax,ax
+  101e06:	66 90                	xchg   ax,ax
+  101e08:	66 90                	xchg   ax,ax
+  101e0a:	66 90                	xchg   ax,ax
+  101e0c:	66 90                	xchg   ax,ax
+  101e0e:	66 90                	xchg   ax,ax
+  101e10:	66 90                	xchg   ax,ax
+  101e12:	66 90                	xchg   ax,ax
+  101e14:	66 90                	xchg   ax,ax
+  101e16:	66 90                	xchg   ax,ax
+  101e18:	66 90                	xchg   ax,ax
+  101e1a:	66 90                	xchg   ax,ax
+  101e1c:	66 90                	xchg   ax,ax
+  101e1e:	66 90                	xchg   ax,ax
+  101e20:	66 90                	xchg   ax,ax
+  101e22:	66 90                	xchg   ax,ax
+  101e24:	66 90                	xchg   ax,ax
+  101e26:	66 90                	xchg   ax,ax
+  101e28:	66 90                	xchg   ax,ax
+  101e2a:	66 90                	xchg   ax,ax
+  101e2c:	66 90                	xchg   ax,ax
+  101e2e:	66 90                	xchg   ax,ax
+  101e30:	66 90                	xchg   ax,ax
+  101e32:	66 90                	xchg   ax,ax
+  101e34:	66 90                	xchg   ax,ax
+  101e36:	66 90                	xchg   ax,ax
+  101e38:	66 90                	xchg   ax,ax
+  101e3a:	66 90                	xchg   ax,ax
+  101e3c:	66 90                	xchg   ax,ax
+  101e3e:	66 90                	xchg   ax,ax
+  101e40:	66 90                	xchg   ax,ax
+  101e42:	66 90                	xchg   ax,ax
+  101e44:	66 90                	xchg   ax,ax
+  101e46:	66 90                	xchg   ax,ax
+  101e48:	66 90                	xchg   ax,ax
+  101e4a:	66 90                	xchg   ax,ax
+  101e4c:	66 90                	xchg   ax,ax
+  101e4e:	66 90                	xchg   ax,ax
+  101e50:	66 90                	xchg   ax,ax
+  101e52:	66 90                	xchg   ax,ax
+  101e54:	66 90                	xchg   ax,ax
+  101e56:	66 90                	xchg   ax,ax
+  101e58:	66 90                	xchg   ax,ax
+  101e5a:	66 90                	xchg   ax,ax
+  101e5c:	66 90                	xchg   ax,ax
+  101e5e:	66 90                	xchg   ax,ax
+  101e60:	66 90                	xchg   ax,ax
+  101e62:	66 90                	xchg   ax,ax
+  101e64:	66 90                	xchg   ax,ax
+  101e66:	66 90                	xchg   ax,ax
+  101e68:	66 90                	xchg   ax,ax
+  101e6a:	66 90                	xchg   ax,ax
+  101e6c:	66 90                	xchg   ax,ax
+  101e6e:	66 90                	xchg   ax,ax
+  101e70:	66 90                	xchg   ax,ax
+  101e72:	66 90                	xchg   ax,ax
+  101e74:	66 90                	xchg   ax,ax
+  101e76:	66 90                	xchg   ax,ax
+  101e78:	66 90                	xchg   ax,ax
+  101e7a:	66 90                	xchg   ax,ax
+  101e7c:	66 90                	xchg   ax,ax
+  101e7e:	66 90                	xchg   ax,ax
+  101e80:	66 90                	xchg   ax,ax
+  101e82:	66 90                	xchg   ax,ax
+  101e84:	66 90                	xchg   ax,ax
+  101e86:	66 90                	xchg   ax,ax
+  101e88:	66 90                	xchg   ax,ax
+  101e8a:	66 90                	xchg   ax,ax
+  101e8c:	66 90                	xchg   ax,ax
+  101e8e:	66 90                	xchg   ax,ax
+  101e90:	66 90                	xchg   ax,ax
+  101e92:	66 90                	xchg   ax,ax
+  101e94:	66 90                	xchg   ax,ax
+  101e96:	66 90                	xchg   ax,ax
+  101e98:	66 90                	xchg   ax,ax
+  101e9a:	66 90                	xchg   ax,ax
+  101e9c:	66 90                	xchg   ax,ax
+  101e9e:	66 90                	xchg   ax,ax
+  101ea0:	66 90                	xchg   ax,ax
+  101ea2:	66 90                	xchg   ax,ax
+  101ea4:	66 90                	xchg   ax,ax
+  101ea6:	66 90                	xchg   ax,ax
+  101ea8:	66 90                	xchg   ax,ax
+  101eaa:	66 90                	xchg   ax,ax
+  101eac:	66 90                	xchg   ax,ax
+  101eae:	66 90                	xchg   ax,ax
+  101eb0:	66 90                	xchg   ax,ax
+  101eb2:	66 90                	xchg   ax,ax
+  101eb4:	66 90                	xchg   ax,ax
+  101eb6:	66 90                	xchg   ax,ax
+  101eb8:	66 90                	xchg   ax,ax
+  101eba:	66 90                	xchg   ax,ax
+  101ebc:	66 90                	xchg   ax,ax
+  101ebe:	66 90                	xchg   ax,ax
+  101ec0:	66 90                	xchg   ax,ax
+  101ec2:	66 90                	xchg   ax,ax
+  101ec4:	66 90                	xchg   ax,ax
+  101ec6:	66 90                	xchg   ax,ax
+  101ec8:	66 90                	xchg   ax,ax
+  101eca:	66 90                	xchg   ax,ax
+  101ecc:	66 90                	xchg   ax,ax
+  101ece:	66 90                	xchg   ax,ax
+  101ed0:	66 90                	xchg   ax,ax
+  101ed2:	66 90                	xchg   ax,ax
+  101ed4:	66 90                	xchg   ax,ax
+  101ed6:	66 90                	xchg   ax,ax
+  101ed8:	66 90                	xchg   ax,ax
+  101eda:	66 90                	xchg   ax,ax
+  101edc:	66 90                	xchg   ax,ax
+  101ede:	66 90                	xchg   ax,ax
+  101ee0:	66 90                	xchg   ax,ax
+  101ee2:	66 90                	xchg   ax,ax
+  101ee4:	66 90                	xchg   ax,ax
+  101ee6:	66 90                	xchg   ax,ax
+  101ee8:	66 90                	xchg   ax,ax
+  101eea:	66 90                	xchg   ax,ax
+  101eec:	66 90                	xchg   ax,ax
+  101eee:	66 90                	xchg   ax,ax
+  101ef0:	66 90                	xchg   ax,ax
+  101ef2:	66 90                	xchg   ax,ax
+  101ef4:	66 90                	xchg   ax,ax
+  101ef6:	66 90                	xchg   ax,ax
+  101ef8:	66 90                	xchg   ax,ax
+  101efa:	66 90                	xchg   ax,ax
+  101efc:	66 90                	xchg   ax,ax
+  101efe:	66 90                	xchg   ax,ax
+  101f00:	66 90                	xchg   ax,ax
+  101f02:	66 90                	xchg   ax,ax
+  101f04:	66 90                	xchg   ax,ax
+  101f06:	66 90                	xchg   ax,ax
+  101f08:	66 90                	xchg   ax,ax
+  101f0a:	66 90                	xchg   ax,ax
+  101f0c:	66 90                	xchg   ax,ax
+  101f0e:	66 90                	xchg   ax,ax
+  101f10:	66 90                	xchg   ax,ax
+  101f12:	66 90                	xchg   ax,ax
+  101f14:	66 90                	xchg   ax,ax
+  101f16:	66 90                	xchg   ax,ax
+  101f18:	66 90                	xchg   ax,ax
+  101f1a:	66 90                	xchg   ax,ax
+  101f1c:	66 90                	xchg   ax,ax
+  101f1e:	66 90                	xchg   ax,ax
+  101f20:	66 90                	xchg   ax,ax
+  101f22:	66 90                	xchg   ax,ax
+  101f24:	66 90                	xchg   ax,ax
+  101f26:	66 90                	xchg   ax,ax
+  101f28:	66 90                	xchg   ax,ax
+  101f2a:	66 90                	xchg   ax,ax
+  101f2c:	66 90                	xchg   ax,ax
+  101f2e:	66 90                	xchg   ax,ax
+  101f30:	66 90                	xchg   ax,ax
+  101f32:	66 90                	xchg   ax,ax
+  101f34:	66 90                	xchg   ax,ax
+  101f36:	66 90                	xchg   ax,ax
+  101f38:	66 90                	xchg   ax,ax
+  101f3a:	66 90                	xchg   ax,ax
+  101f3c:	66 90                	xchg   ax,ax
+  101f3e:	66 90                	xchg   ax,ax
+  101f40:	66 90                	xchg   ax,ax
+  101f42:	66 90                	xchg   ax,ax
+  101f44:	66 90                	xchg   ax,ax
+  101f46:	66 90                	xchg   ax,ax
+  101f48:	66 90                	xchg   ax,ax
+  101f4a:	66 90                	xchg   ax,ax
+  101f4c:	66 90                	xchg   ax,ax
+  101f4e:	66 90                	xchg   ax,ax
+  101f50:	66 90                	xchg   ax,ax
+  101f52:	66 90                	xchg   ax,ax
+  101f54:	66 90                	xchg   ax,ax
+  101f56:	66 90                	xchg   ax,ax
+  101f58:	66 90                	xchg   ax,ax
+  101f5a:	66 90                	xchg   ax,ax
+  101f5c:	66 90                	xchg   ax,ax
+  101f5e:	66 90                	xchg   ax,ax
+  101f60:	66 90                	xchg   ax,ax
+  101f62:	66 90                	xchg   ax,ax
+  101f64:	66 90                	xchg   ax,ax
+  101f66:	66 90                	xchg   ax,ax
+  101f68:	66 90                	xchg   ax,ax
+  101f6a:	66 90                	xchg   ax,ax
+  101f6c:	66 90                	xchg   ax,ax
+  101f6e:	66 90                	xchg   ax,ax
+  101f70:	66 90                	xchg   ax,ax
+  101f72:	66 90                	xchg   ax,ax
+  101f74:	66 90                	xchg   ax,ax
+  101f76:	66 90                	xchg   ax,ax
+  101f78:	66 90                	xchg   ax,ax
+  101f7a:	66 90                	xchg   ax,ax
+  101f7c:	66 90                	xchg   ax,ax
+  101f7e:	66 90                	xchg   ax,ax
+  101f80:	66 90                	xchg   ax,ax
+  101f82:	66 90                	xchg   ax,ax
+  101f84:	66 90                	xchg   ax,ax
+  101f86:	66 90                	xchg   ax,ax
+  101f88:	66 90                	xchg   ax,ax
+  101f8a:	66 90                	xchg   ax,ax
+  101f8c:	66 90                	xchg   ax,ax
+  101f8e:	66 90                	xchg   ax,ax
+  101f90:	66 90                	xchg   ax,ax
+  101f92:	66 90                	xchg   ax,ax
+  101f94:	66 90                	xchg   ax,ax
+  101f96:	66 90                	xchg   ax,ax
+  101f98:	66 90                	xchg   ax,ax
+  101f9a:	66 90                	xchg   ax,ax
+  101f9c:	66 90                	xchg   ax,ax
+  101f9e:	66 90                	xchg   ax,ax
+  101fa0:	66 90                	xchg   ax,ax
+  101fa2:	66 90                	xchg   ax,ax
+  101fa4:	66 90                	xchg   ax,ax
+  101fa6:	66 90                	xchg   ax,ax
+  101fa8:	66 90                	xchg   ax,ax
+  101faa:	66 90                	xchg   ax,ax
+  101fac:	66 90                	xchg   ax,ax
+  101fae:	66 90                	xchg   ax,ax
+  101fb0:	66 90                	xchg   ax,ax
+  101fb2:	66 90                	xchg   ax,ax
+  101fb4:	66 90                	xchg   ax,ax
+  101fb6:	66 90                	xchg   ax,ax
+  101fb8:	66 90                	xchg   ax,ax
+  101fba:	66 90                	xchg   ax,ax
+  101fbc:	66 90                	xchg   ax,ax
+  101fbe:	66 90                	xchg   ax,ax
+  101fc0:	66 90                	xchg   ax,ax
+  101fc2:	66 90                	xchg   ax,ax
+  101fc4:	66 90                	xchg   ax,ax
+  101fc6:	66 90                	xchg   ax,ax
+  101fc8:	66 90                	xchg   ax,ax
+  101fca:	66 90                	xchg   ax,ax
+  101fcc:	66 90                	xchg   ax,ax
+  101fce:	66 90                	xchg   ax,ax
+  101fd0:	66 90                	xchg   ax,ax
+  101fd2:	66 90                	xchg   ax,ax
+  101fd4:	66 90                	xchg   ax,ax
+  101fd6:	66 90                	xchg   ax,ax
+  101fd8:	66 90                	xchg   ax,ax
+  101fda:	66 90                	xchg   ax,ax
+  101fdc:	66 90                	xchg   ax,ax
+  101fde:	66 90                	xchg   ax,ax
+  101fe0:	66 90                	xchg   ax,ax
+  101fe2:	66 90                	xchg   ax,ax
+  101fe4:	66 90                	xchg   ax,ax
+  101fe6:	66 90                	xchg   ax,ax
+  101fe8:	66 90                	xchg   ax,ax
+  101fea:	66 90                	xchg   ax,ax
+  101fec:	66 90                	xchg   ax,ax
+  101fee:	66 90                	xchg   ax,ax
+  101ff0:	66 90                	xchg   ax,ax
+  101ff2:	66 90                	xchg   ax,ax
+  101ff4:	66 90                	xchg   ax,ax
+  101ff6:	66 90                	xchg   ax,ax
+  101ff8:	66 90                	xchg   ax,ax
+  101ffa:	66 90                	xchg   ax,ax
+  101ffc:	66 90                	xchg   ax,ax
+  101ffe:	66 90                	xchg   ax,ax
