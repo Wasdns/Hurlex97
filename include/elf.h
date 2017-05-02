@@ -41,7 +41,7 @@ typedef struct elf_t {
 // 从 multiboot_t 结构获取ELF信息
 elf_t elf_from_multiboot(multiboot_t *mb);
 
-// 查看ELF的符号信息
+// 查看ELF的符号信息，根据地址获取函数名称
 const char *elf_lookup_symbol(uint32_t addr, elf_t *elf);
 
 #endif  // INCLUDE_ELF_H_
