@@ -51,3 +51,34 @@ LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 - Makefile
 
 - boot.s
+
+ld链接脚本中指明入口函数：
+
+```
+ENTRY(start)
+```
+
+boot.s 文件：
+
+- Multiboot 标准的配置信息说明
+
+- start 函数 - 关闭中断，传入参数(ebx寄存器的值，即Chapter5中所述计算机硬件及内核文件的信息)，调用内核的入口函数
+
+当GRUB载入我们的内核时，CPU的一些状态信息：
+
+
+
+    CS 指向基地址为 0x00000000，限长为4G – 1的代码段描述符。
+
+    DS，SS，ES，FS 和 GS 指向基地址为0x00000000，限长为4G–1的数据段描述符。
+
+    A20 地址线已经打开。
+
+    页机制被禁止。
+
+    中断被禁止。
+
+    EAX = 0x2BADB002
+
+    系统信息和启动信息块的线性地址保存在 EBX中(相当于一个指针)。
+
