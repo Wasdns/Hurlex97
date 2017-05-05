@@ -19,7 +19,12 @@ int kern_entry() {
     printk("\nThis is a function named printk, its value is %d\n", 1123);
 
     printk("\n*************************************\n");
-    panic("test");
+    //panic("test");
+    //printk("\n*************************************\n");
+
+    printk("\nGDT Initialization...\n");
+    init_gdt();
+    printk("\nInitialization Finished!\n");
     printk("\n*************************************\n");
 
     return 0;
